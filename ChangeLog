@@ -1,0 +1,75 @@
+2005-07-26  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* R/WhittleEst.R: some cosmetic; do not define WhittleEst(),
+	  as long as I don't have time for the 'FIXME' parts.
+
+2005-04-09  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* R/WhittleEst.R (Qmin): made this a *local* function inside WhittleEst()
+	* man/Qeta.Rd: dito
+
+2005-04-05  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version): 0.9-2 {for putting up for FTP}
+
+	* R/polyFEXP.R: define a print() and a plot() method for "FEXP" objects.
+	* man/plot.FEXP.Rd: consequently.
+
+2005-02-11  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* INDEX: updated
+
+2004-06-25  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version): 0.9-1 {still unreleased}
+
+	* R/polyFEXP.R (FEXPest): switched from glim() to glm();
+	  use t-based glm() P-values rather than the z-based ones.
+
+2004-05-31  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* tests/FEXP-ex.R: for testing FEXPest()
+	* R/polyFEXP.R:    which now works -- only with the hack of
+            for(fn in c('glim', 'glim_print'))
+                source(paste("/u/maechler/S/S+3.4/",fn,".R",sep=''))
+
+2004-05-29  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* R/polyFEXP.R (FEXPest): new function from J.Beran's "main" program
+
+2003-12-23  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version): 0.9-0 {for the new sim*() setup}.
+
+	* R/sim.R: new file with simARMA0(), simFGN0() and new simGauss()
+	* man/simGauss.Rd: simGauss() is now the work horse, really.
+
+2003-12-05  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* tests/: new test directory, currently with
+	* tests/sim-ex.R
+
+	HOORAY: version 0.8-0 passes "R-devel CMD check" perfectly
+
+	* man/ethernetTraffic.Rd:
+	* man/llplot.Rd: updated man pages in many places
+	* man/lxplot.Rd:
+
+	* R/WhittleEst.R (Qeta): add "FIXME" -- not yet usable + whitespace
+
+
+2002-08-12  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* R/WhittleEst.R (specFGN): made the spectral functions return
+		proper "spec" objects as base::spectrum()
+	* ... many more changes; including help pages, examples,  (not
+		quite finished)
+
+2002-05-18  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* man/*: created help files for everything; not yet edited much
+
+2002-05-13  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION: Package created; not much yet but datasets
+

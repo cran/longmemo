@@ -1,0 +1,13 @@
+o The other original ``main program'' should become a function, too
+   R/WhittleEst.R --> fWhittleEst() : not yet (see 'FIXME' in there).
+
+o Think about adding Graf's  *robust* estimators ("HUBINC" et al.).
+
+o Completely merge with the also unreleased package ../ts2test !!
+
+o Compare with   library( fracdiff )  :
+
+    --> partly happened in "Semesterarbeit" by Thomas Grischott
+	(-> /u/maechler/save/papers/RGrischott-LongMem.pdf
+	  and /sfs/a/A/SfS-students/groman-Semarbeit/RAusw/ )
+

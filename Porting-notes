@@ -1,0 +1,21 @@
+o Split R source in thematical parts --
+  according to the sections in Chapter 12 of the book.
+
+ File		   Section  Title					Pages
+ ----		   -------  -----					-----
+ R/simFracGauss.R  12.1.1   Simulation of fractional Gaussian noise	218-220
+ R/simFracARIMA.R  12.1.2   Simulation of fractional ARIMA($0,d,0$)	220-223
+ R/WhittleEst.R	   12.1.3   Whittle estimator for fractional Gaussian
+			            noise and fractional ARIMA(p,d,q)	223-233
+ R/polyFEXP.R	   12.1.4   Approximate MLE for polynomial FEXP-models	233-237
+
+
+o I decided to try to make the two spectrum() functions compatible to the
+  standard  spectrum() and spec.ar() functions
+  ==> name change from 'fspec*' to 'spec*'
+
+o The 2 original ``main programs''  have become new functions :
+
+  R/polyFEXP.R	  FEXPest()
+  R/WhittleEst.R  fARIMA()
+

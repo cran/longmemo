@@ -1,0 +1,21 @@
+CetaARIMA               Covariance for fractional ARIMA
+CetaFGN                 Covariance Matrix of Eta for Fractional Gaussian Noise
+FEXPest                 Fractional EXP (FEXP) Model Estimator
+ckARMA0                 Auto Covariances of a Fractional ARIMA(0,d,0) Process
+ckFGN0                  Auto Covariances of a Fractional Gaussian Process
+llplot                  Log-Log Plot of Spectrum
+lxplot                  Log-X Plot of Spectrum
+per                     Simple Periodogram Estimate
+Qeta                    Function to be minimized for approx. MLE of
+                        frARIMA or frGn
+simGauss                Simulate (Fractional) Gaussian Processes
+specARIMA               Spectral Density of Fractional ARMA Process
+specFGN                 Spectral Density of Fractional Gaussian Noise
+
+	DATA SETS
+
+ethernetTraffic         Ethernet Traffic Data Set
+NBSdiff1kg              NBS measurement deviations from 1 kg
+NhemiTemp               Northern Hemisphere Temperature
+NileMin                 Nile River Minima, yearly 622-1284
+videoVBR                Video VBR data

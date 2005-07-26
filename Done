@@ -1,0 +1,8 @@
+o One of the 2 original ``main programs'' now has become a new function :
+
+  R/polyFEXP.R	  FEXPest()
+  R/polyFEXP.R	  also defined print.FEXP()  and plot.FEXP()
+
+
+o Documentation for the data sets
+
