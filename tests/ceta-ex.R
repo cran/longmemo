@@ -15,7 +15,7 @@ for(H in H0) {
         "\n")
 }
 
-for(em in 6:18) {
+for(em in 6:18) { ## oops -- becomes slow [specFGN() !] from about em = 13:
     m <- 2^em
     cAA <- CetaARIMA(eta= c(H = 0.7, phi=0.6, psi= -0.3), m = m, p=1,q=1)
     cat("m= 2^",formatC(em, wid=2),": ",

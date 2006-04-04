@@ -11,3 +11,6 @@ o Compare with   library( fracdiff )  :
 	(-> /u/maechler/save/papers/RGrischott-LongMem.pdf
 	  and /sfs/a/A/SfS-students/groman-Semarbeit/RAusw/ )
 
+o specFGN(eta, m, nsum)  becomes quite slow for "large" m
+  (e.g m = 2^16; the for loop takes time).
+  Should do this in C code!

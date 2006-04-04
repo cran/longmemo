@@ -1,3 +1,8 @@
+2006-04-04  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version, Date): 0.9-3
+		trivial change: move R/README and add some to .Rbuildignore
+
 2005-07-26  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* R/WhittleEst.R: some cosmetic; do not define WhittleEst(),
