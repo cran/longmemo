@@ -1,6 +1,7 @@
 
-R : Copyright 2005, The R Foundation for Statistical Computing
-Version 2.1.0 beta (2005-04-09), ISBN 3-900051-07-0
+R version 2.4.0 alpha (2006-09-07 r39185)
+Copyright (C) 2006 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -11,11 +12,12 @@ Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
 
 Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for a HTML browser interface to help.
+'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
 > library(longmemo)
 > 
+> options(digits = 5) # since we want to "R CMD Rdiff" the output
 > data(NileMin)
 > fF <- FEXPest(NileMin, order.poly=3, pvalmax= .5, verbose=TRUE)
 glm() [0]:
@@ -24,86 +26,86 @@ Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--3.1378  -1.0461  -0.3179   0.3502   2.4549  
+   Min      1Q  Median      3Q     Max  
+-3.138  -1.046  -0.318   0.350   2.455  
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  6.65964    0.05442  122.38   <2e-16 ***
-xlong       -0.81094    0.06246  -12.98   <2e-16 ***
+(Intercept)   6.6596     0.0544   122.4   <2e-16 ***
+xlong        -0.8109     0.0625   -13.0   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-(Dispersion parameter for Gamma family taken to be 0.9800066)
+(Dispersion parameter for Gamma family taken to be 0.98)
 
     Null deviance: 713.99  on 330  degrees of freedom
 Residual deviance: 394.88  on 329  degrees of freedom
-AIC: 5075.7
+AIC: 5076
 
 Number of Fisher Scoring iterations: 6
 
-   P-val[eta]: < 1e-09
+   P-val[eta]: <1e-09
 glm() [1]:
 
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--3.1404  -1.0466  -0.3123   0.3263   2.5779  
+   Min      1Q  Median      3Q     Max  
+-3.140  -1.047  -0.312   0.326   2.578  
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  6.78950    0.17838  38.062  < 2e-16 ***
-xlong       -0.74357    0.11279  -6.593 1.73e-10 ***
-ffr         -0.08356    0.10851  -0.770    0.442    
+(Intercept)   6.7895     0.1784   38.06  < 2e-16 ***
+xlong        -0.7436     0.1128   -6.59  1.7e-10 ***
+ffr          -0.0836     0.1085   -0.77     0.44    
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-(Dispersion parameter for Gamma family taken to be 0.9911608)
+(Dispersion parameter for Gamma family taken to be 0.99118)
 
     Null deviance: 713.99  on 330  degrees of freedom
 Residual deviance: 394.27  on 328  degrees of freedom
-AIC: 5077.1
+AIC: 5077
 
 Number of Fisher Scoring iterations: 6
 
-   P-val[eta]: < 1e-09, 0.44179
+   P-val[eta]: <1e-09, 0.442
 glm() [2]:
 
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--3.1620  -1.0302  -0.3019   0.3302   2.6998  
+   Min      1Q  Median      3Q     Max  
+-3.162  -1.030  -0.302   0.330   2.700  
 
 Coefficients:
               Estimate Std. Error t value Pr(>|t|)    
-(Intercept)    6.65753    0.05503 120.973  < 2e-16 ***
-xlong         -0.91021    0.19298  -4.717 3.56e-06 ***
-poly(ffr, j)1  0.86060    2.73031   0.315    0.753    
-poly(ffr, j)2 -1.95833    1.70342  -1.150    0.251    
+(Intercept)      6.657      0.055  120.97  < 2e-16 ***
+xlong           -0.910      0.193   -4.72  3.6e-06 ***
+poly(ffr, j)1    0.861      2.730    0.32     0.75    
+poly(ffr, j)2   -1.958      1.703   -1.15     0.25    
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-(Dispersion parameter for Gamma family taken to be 1.00129)
+(Dispersion parameter for Gamma family taken to be 1.0013)
 
     Null deviance: 713.99  on 330  degrees of freedom
 Residual deviance: 392.85  on 327  degrees of freedom
-AIC: 5077.7
+AIC: 5078
 
 Number of Fisher Scoring iterations: 6
 
-   P-val[eta]: 3.5584e-06, 0.75281, 0.25113
+   P-val[eta]: 3.56e-06, 0.753, 0.251
 > fF
 'FEXP' estimator, call:  FEXPest(x = NileMin, order.poly = 3, pvalmax = 0.5, verbose = TRUE) 
- polynomial order 1 - stopped early (P > pvalmax); H = 0.871784
+ polynomial order 1 - stopped early (P > pvalmax); H = 0.87178
  coefficients 'theta' =
-               Estimate  Std. Error  t value   Pr(>|t|)
-(Intercept)  6.78950147  0.17838115 38.06176 < 2.22e-16
-1 - 2*H     -0.74356806  0.11278890 -6.59256 1.7279e-10
-ffr         -0.08356174  0.10850647 -0.77011    0.44179
+             Estimate Std. Error t value  Pr(>|t|)
+(Intercept)  6.789501   0.178383 38.0614 < 2.2e-16
+1 - 2*H     -0.743568   0.112790 -6.5925 1.729e-10
+ffr         -0.083562   0.108507 -0.7701    0.4418
 
  $ freq: num [1:331] 0.00948 0.01895 0.02843 0.03791 0.04738 ...
  $ yper: num [1:331] 56564  5379 52555  1098  2916 ...
@@ -126,27 +128,27 @@ Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--4.5042  -1.1236  -0.4783   0.2596   3.2516  
+   Min      1Q  Median      3Q     Max  
+-4.504  -1.124  -0.478   0.260   3.252  
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  3.96536    0.05343   74.21   <2e-16 ***
-xlong       -2.62691    0.06069  -43.28   <2e-16 ***
+(Intercept)   3.9654     0.0534    74.2   <2e-16 ***
+xlong        -2.6269     0.0607   -43.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-(Dispersion parameter for Gamma family taken to be 1.424709)
+(Dispersion parameter for Gamma family taken to be 1.4247)
 
     Null deviance: 3280.63  on 498  degrees of freedom
 Residual deviance:  701.23  on 497  degrees of freedom
-AIC: 4943.1
+AIC: 4943
 
 Number of Fisher Scoring iterations: 11
 
-   P-val[eta]: < 1e-09
+   P-val[eta]: <1e-09
 $H
-[1] 1.813453
+[1] 1.8135
 
 -------------------------------------------
 max.poly= 1:
@@ -157,53 +159,53 @@ Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--4.5042  -1.1236  -0.4783   0.2596   3.2516  
+   Min      1Q  Median      3Q     Max  
+-4.504  -1.124  -0.478   0.260   3.252  
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  3.96536    0.05343   74.21   <2e-16 ***
-xlong       -2.62691    0.06069  -43.28   <2e-16 ***
+(Intercept)   3.9654     0.0534    74.2   <2e-16 ***
+xlong        -2.6269     0.0607   -43.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-(Dispersion parameter for Gamma family taken to be 1.424709)
+(Dispersion parameter for Gamma family taken to be 1.4247)
 
     Null deviance: 3280.63  on 498  degrees of freedom
 Residual deviance:  701.23  on 497  degrees of freedom
-AIC: 4943.1
+AIC: 4943
 
 Number of Fisher Scoring iterations: 11
 
-   P-val[eta]: < 1e-09
+   P-val[eta]: <1e-09
 glm() [1]:
 
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--4.0624  -1.0598  -0.3709   0.3358   2.4613  
+   Min      1Q  Median      3Q     Max  
+-4.062  -1.060  -0.371   0.336   2.461  
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  5.63769    0.14336   39.33   <2e-16 ***
-xlong       -1.36501    0.08953  -15.25   <2e-16 ***
-ffr         -1.15536    0.08709  -13.27   <2e-16 ***
+(Intercept)   5.6377     0.1434    39.3   <2e-16 ***
+xlong        -1.3650     0.0895   -15.2   <2e-16 ***
+ffr          -1.1554     0.0871   -13.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-(Dispersion parameter for Gamma family taken to be 0.9799696)
+(Dispersion parameter for Gamma family taken to be 0.97997)
 
     Null deviance: 3280.63  on 498  degrees of freedom
 Residual deviance:  566.85  on 496  degrees of freedom
-AIC: 4818.9
+AIC: 4819
 
 Number of Fisher Scoring iterations: 8
 
-   P-val[eta]: < 1e-09, < 1e-09
+   P-val[eta]: <1e-09, <1e-09
 $H
-[1] 1.182506
+[1] 1.1825
 
 -------------------------------------------
 max.poly= 2:
@@ -214,80 +216,80 @@ Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--4.5042  -1.1236  -0.4783   0.2596   3.2516  
+   Min      1Q  Median      3Q     Max  
+-4.504  -1.124  -0.478   0.260   3.252  
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  3.96536    0.05343   74.21   <2e-16 ***
-xlong       -2.62691    0.06069  -43.28   <2e-16 ***
+(Intercept)   3.9654     0.0534    74.2   <2e-16 ***
+xlong        -2.6269     0.0607   -43.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-(Dispersion parameter for Gamma family taken to be 1.424709)
+(Dispersion parameter for Gamma family taken to be 1.4247)
 
     Null deviance: 3280.63  on 498  degrees of freedom
 Residual deviance:  701.23  on 497  degrees of freedom
-AIC: 4943.1
+AIC: 4943
 
 Number of Fisher Scoring iterations: 11
 
-   P-val[eta]: < 1e-09
+   P-val[eta]: <1e-09
 glm() [1]:
 
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--4.0624  -1.0598  -0.3709   0.3358   2.4613  
+   Min      1Q  Median      3Q     Max  
+-4.062  -1.060  -0.371   0.336   2.461  
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  5.63769    0.14336   39.33   <2e-16 ***
-xlong       -1.36501    0.08953  -15.25   <2e-16 ***
-ffr         -1.15536    0.08709  -13.27   <2e-16 ***
+(Intercept)   5.6377     0.1434    39.3   <2e-16 ***
+xlong        -1.3650     0.0895   -15.2   <2e-16 ***
+ffr          -1.1554     0.0871   -13.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-(Dispersion parameter for Gamma family taken to be 0.9799696)
+(Dispersion parameter for Gamma family taken to be 0.97997)
 
     Null deviance: 3280.63  on 498  degrees of freedom
 Residual deviance:  566.85  on 496  degrees of freedom
-AIC: 4818.9
+AIC: 4819
 
 Number of Fisher Scoring iterations: 8
 
-   P-val[eta]: < 1e-09, < 1e-09
+   P-val[eta]: <1e-09, <1e-09
 glm() [2]:
 
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--3.9830  -1.0160  -0.3321   0.2953   2.7167  
+   Min      1Q  Median      3Q     Max  
+-3.983  -1.016  -0.332   0.295   2.717  
 
 Coefficients:
-               Estimate Std. Error t value Pr(>|t|)    
-(Intercept)     3.79852    0.04398  86.374  < 2e-16 ***
-xlong          -0.71265    0.14870  -4.792 2.18e-06 ***
-poly(ffr, j)1 -33.86449    2.61036 -12.973  < 2e-16 ***
-poly(ffr, j)2   8.17740    1.64428   4.973 9.10e-07 ***
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)      3.799      0.044   86.37  < 2e-16 ***
+xlong           -0.713      0.149   -4.79  2.2e-06 ***
+poly(ffr, j)1  -33.864      2.610  -12.97  < 2e-16 ***
+poly(ffr, j)2    8.177      1.644    4.97  9.1e-07 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-(Dispersion parameter for Gamma family taken to be 0.9646582)
+(Dispersion parameter for Gamma family taken to be 0.96466)
 
     Null deviance: 3280.63  on 498  degrees of freedom
 Residual deviance:  546.61  on 495  degrees of freedom
-AIC: 4799.7
+AIC: 4800
 
 Number of Fisher Scoring iterations: 7
 
-   P-val[eta]: 2.1811e-06, < 1e-09, 9.0955e-07
+   P-val[eta]: 2.18e-06, < 1e-09, 9.10e-07
 $H
-[1] 0.856327
+[1] 0.85633
 
 -------------------------------------------
 max.poly= 3:
@@ -298,122 +300,125 @@ Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--4.5042  -1.1236  -0.4783   0.2596   3.2516  
+   Min      1Q  Median      3Q     Max  
+-4.504  -1.124  -0.478   0.260   3.252  
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  3.96536    0.05343   74.21   <2e-16 ***
-xlong       -2.62691    0.06069  -43.28   <2e-16 ***
+(Intercept)   3.9654     0.0534    74.2   <2e-16 ***
+xlong        -2.6269     0.0607   -43.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-(Dispersion parameter for Gamma family taken to be 1.424709)
+(Dispersion parameter for Gamma family taken to be 1.4247)
 
     Null deviance: 3280.63  on 498  degrees of freedom
 Residual deviance:  701.23  on 497  degrees of freedom
-AIC: 4943.1
+AIC: 4943
 
 Number of Fisher Scoring iterations: 11
 
-   P-val[eta]: < 1e-09
+   P-val[eta]: <1e-09
 glm() [1]:
 
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--4.0624  -1.0598  -0.3709   0.3358   2.4613  
+   Min      1Q  Median      3Q     Max  
+-4.062  -1.060  -0.371   0.336   2.461  
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  5.63769    0.14336   39.33   <2e-16 ***
-xlong       -1.36501    0.08953  -15.25   <2e-16 ***
-ffr         -1.15536    0.08709  -13.27   <2e-16 ***
+(Intercept)   5.6377     0.1434    39.3   <2e-16 ***
+xlong        -1.3650     0.0895   -15.2   <2e-16 ***
+ffr          -1.1554     0.0871   -13.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-(Dispersion parameter for Gamma family taken to be 0.9799696)
+(Dispersion parameter for Gamma family taken to be 0.97997)
 
     Null deviance: 3280.63  on 498  degrees of freedom
 Residual deviance:  566.85  on 496  degrees of freedom
-AIC: 4818.9
+AIC: 4819
 
 Number of Fisher Scoring iterations: 8
 
-   P-val[eta]: < 1e-09, < 1e-09
+   P-val[eta]: <1e-09, <1e-09
 glm() [2]:
 
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--3.9830  -1.0160  -0.3321   0.2953   2.7167  
+   Min      1Q  Median      3Q     Max  
+-3.983  -1.016  -0.332   0.295   2.717  
 
 Coefficients:
-               Estimate Std. Error t value Pr(>|t|)    
-(Intercept)     3.79852    0.04398  86.374  < 2e-16 ***
-xlong          -0.71265    0.14870  -4.792 2.18e-06 ***
-poly(ffr, j)1 -33.86449    2.61036 -12.973  < 2e-16 ***
-poly(ffr, j)2   8.17740    1.64428   4.973 9.10e-07 ***
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)      3.799      0.044   86.37  < 2e-16 ***
+xlong           -0.713      0.149   -4.79  2.2e-06 ***
+poly(ffr, j)1  -33.864      2.610  -12.97  < 2e-16 ***
+poly(ffr, j)2    8.177      1.644    4.97  9.1e-07 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-(Dispersion parameter for Gamma family taken to be 0.9646582)
+(Dispersion parameter for Gamma family taken to be 0.96466)
 
     Null deviance: 3280.63  on 498  degrees of freedom
 Residual deviance:  546.61  on 495  degrees of freedom
-AIC: 4799.7
+AIC: 4800
 
 Number of Fisher Scoring iterations: 7
 
-   P-val[eta]: 2.1811e-06, < 1e-09, 9.0955e-07
+   P-val[eta]: 2.18e-06, < 1e-09, 9.10e-07
 glm() [3]:
 
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
 Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--3.9830  -1.0159  -0.3323   0.2954   2.7174  
+   Min      1Q  Median      3Q     Max  
+-3.983  -1.016  -0.332   0.295   2.717  
 
 Coefficients:
-                Estimate Std. Error t value Pr(>|t|)    
-(Intercept)     3.798523   0.044032  86.267  < 2e-16 ***
-xlong          -0.713794   0.208519  -3.423 0.000670 ***
-poly(ffr, j)1 -33.845461   3.531059  -9.585  < 2e-16 ***
-poly(ffr, j)2   8.167671   2.094309   3.900 0.000110 ***
-poly(ffr, j)3   0.009463   1.377260   0.007 0.994521    
+               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     3.79852    0.04403   86.27  < 2e-16 ***
+xlong          -0.71379    0.20852   -3.42  0.00067 ***
+poly(ffr, j)1 -33.84546    3.53106   -9.59  < 2e-16 ***
+poly(ffr, j)2   8.16767    2.09431    3.90  0.00011 ***
+poly(ffr, j)3   0.00946    1.37726    0.01  0.99452    
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
 (Dispersion parameter for Gamma family taken to be 0.96664)
 
     Null deviance: 3280.63  on 498  degrees of freedom
 Residual deviance:  546.61  on 494  degrees of freedom
-AIC: 4801.7
+AIC: 4802
 
 Number of Fisher Scoring iterations: 7
 
-   P-val[eta]: 0.00067042, < 1e-09, 0.00010953, 0.99452072
+   P-val[eta]: 0.000670, < 1e-09, 0.000110, 0.994521
 $H
-[1] 0.856327
+[1] 0.85633
 
 > 
 > fv
 'FEXP' estimator, call:  FEXPest(x = videoVBR, order.poly = max.poly, pvalmax = 0.5, verbose = TRUE) 
- polynomial order 2 - stopped early (P > pvalmax); H = 0.8563269
+ polynomial order 2 - stopped early (P > pvalmax); H = 0.85633
  coefficients 'theta' =
-                  Estimate   Std. Error   t value   Pr(>|t|)
-(Intercept)     3.79851575   0.04397772  86.37363 < 2.22e-16
-1 - 2*H        -0.71265388   0.14870201  -4.79250 2.1811e-06
-poly(ffr, j)1 -33.86448708   2.61035879 -12.97312 < 2.22e-16
-poly(ffr, j)2   8.17740292   1.64428472   4.97323 9.0955e-07
+                Estimate Std. Error  t value  Pr(>|t|)
+(Intercept)     3.798516   0.043978  86.3733 < 2.2e-16
+1 - 2*H        -0.712654   0.148702  -4.7925 2.181e-06
+poly(ffr, j)1 -33.864487   2.610367 -12.9731 < 2.2e-16
+poly(ffr, j)2   8.177403   1.644290   4.9732 9.096e-07
 
  $ freq: num [1:499] 0.00628 0.01257 0.01885 0.02513 0.03142 ...
  $ yper: num [1:499]  5145 22812 40031  7476 33737 ...
  $ spec: num [1:499] 51315 30682 22521 17979 15029 ...
 > plot(fv, type = "o", cex = 0.5)
+> 
+> cat('Time elapsed: ', proc.time(),'\n') # for ``statistical reasons''
+Time elapsed:  1.376 0.053 1.986 0 0 
 > 

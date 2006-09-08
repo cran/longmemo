@@ -1,6 +1,7 @@
 
-R : Copyright 2003, The R Foundation for Statistical Computing
-Version 1.9.0 Under development (unstable) (2003-12-22), ISBN 3-900051-00-3
+R version 2.4.0 alpha (2006-09-07 r39185)
+Copyright (C) 2006 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -8,10 +9,10 @@ Type 'license()' or 'licence()' for distribution details.
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
-'citation()' on how to cite R in publications.
+'citation()' on how to cite R or R packages in publications.
 
 Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for a HTML browser interface to help.
+'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
 > library(longmemo)
@@ -51,7 +52,7 @@ H= 0.96875 ; CetaFGN: 0.514675  ; C.ARIMA(*,0,0): 0.716336
 H= 0.98    ; CetaFGN: 0.504431  ; C.ARIMA(*,0,0): 0.716336  
 H= 0.99    ; CetaFGN: 0.454106  ; C.ARIMA(*,0,0): 0.716336  
 > 
-> for(em in 6:18) {
+> for(em in 6:18) { ## oops -- becomes slow [specFGN() !] from about em = 13:
 +     m <- 2^em
 +     cAA <- CetaARIMA(eta= c(H = 0.7, phi=0.6, psi= -0.3), m = m, p=1,q=1)
 +     cat("m= 2^",formatC(em, wid=2),": ",
@@ -141,5 +142,5 @@ m= 2^18:  C_{FGN}= 0.428371 ; C_{AR; 1,1}= 6.6007
 > 
 > ## Last Line:
 > cat('Time elapsed: ', proc.time() - .proctime00,'\n')
-Time elapsed:  195.43 1.76 212.69 0 0 
+Time elapsed:  58.929 0.213 59.412 0 0 
 > 
