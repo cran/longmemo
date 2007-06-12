@@ -29,8 +29,9 @@ llplot <- function(yper,spec) {
   ## Arguments:
   ## -------------------------------------------------------------------------
   ## Author: Jan Beran;	 modified: Martin Maechler, Date: Sep 95.
-    n2 <- length(yper)
+    n2 <- length(yper) ## == (n-1) %/% 2  ( = {Jan} trunc((n-1)/2) }
     if(length(spec) != n2) stop("'spec' and 'yper' must have same length")
+    n <- 2*n2 + 1
     fglim <- (1:n2) * 2*pi / n
     plot (fglim,yper,log = "xy")
     lines(fglim,spec,col = 4)
@@ -45,6 +46,7 @@ lxplot <- function(yper,spec) {
     ## Author: Jan Beran;  modified: Martin Maechler, Date: Sep 95.
     n2 <- length(yper)
     if(length(spec) != n2) stop("'spec' and 'yper' must have same length")
+    n <- 2*n2 + 1
     fglim <- (1:n2) * 2*pi / n
     plot (fglim,yper,log = "y")
     lines(fglim,spec,col = 4)
@@ -143,9 +145,13 @@ print.FEXP <-
                 "user specified",
                 formatC(x$H, digits= digits)))
     printCoefmat(x$coefficients, digits = digits,
-                 signif.stars = FALSE, ## signif.stars = signif.stars,
-                 na.print = "NA", ...)
-    cat("\n")
+		 signif.stars = FALSE, ## signif.stars = signif.stars,
+		 na.print = "NA", ...)
+    s.2H <- x$coefficients["1 - 2*H", "Std. Error"]
+    Hround <- function(x) round(x, max(2, digits - 4))
+    seForm <- function(s) sprintf(" (%g)", Hround(s))
+    cat("  ==>            H =", Hround(x$H),     seForm(s.2H/2), "\n")
+    cat(" <==> d := H - 1/2 =", Hround(x$H-0.5), seForm(s.2H/2), "\n\n")
     str(x[length(x)-(2:0)], no.list = TRUE)
     invisible(x)
 }

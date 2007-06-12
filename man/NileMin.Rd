@@ -1,6 +1,7 @@
 \name{NileMin}
 \alias{NileMin}
 \docType{data}
+\encoding{latin1}
 \title{Nile River Minima, yearly 622--1284}
 \description{
   Yearly minimal water levels of the Nile river for the years 622

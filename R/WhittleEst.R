@@ -256,9 +256,15 @@ Qeta <- function(eta, model = c("fGn","fARIMA"), n, yper, pq.ARIMA,
     H <- eta[1]
     ##         spectrum at Fourier frequencies
 
-### FIXME:  `n' is undefined    ; `p', `q' are undefined, too for ARIMA
+    if (model == "fARIMA") {
+        p <- pq.ARIMA[1]
+        q <- pq.ARIMA[2]
+        stopifnot(is.numeric(p), is.numeric(q),
+                  p == round(p), q == round(q), p >= 0, q >= 0)
+    }
 
-### FIXME 2 : For MLE Minimization, only `B' is used --> do this via argument!
+    ## FIXME : For MLE Minimization, only `B' is used --> do this via argument!
+
 
     sp <- switch(model,
                  "fGn"   = specFGN(eta,n),

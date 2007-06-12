@@ -1,6 +1,18 @@
+2007-06-12  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* R/polyFEXP.R (llplot, lxplot): define 'n'.
+	* R/WhittleEst.R (Qeta): extract (p,q) from pq.ARIMA when needed.
+
+2006-11-15  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version): 0.9-5 {not yet released}
+
+	* R/polyFEXP.R (print.FEXP): also show H = .. (s.e.), d = * (s.e.)
+
 2006-09-08  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* DESCRIPTION (LazyData): yes
+	(Version): 0.9-4
 	(Enhances): fracdiff
 
 2006-04-04  Martin Maechler  <maechler@stat.math.ethz.ch>
