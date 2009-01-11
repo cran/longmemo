@@ -2,7 +2,7 @@
 \alias{llplot}
 \title{Log-Log Plot of Spectrum}
 \description{
-  Log-Log Plot of Spectrum}
+  Log-Log Plot of Spectrum
 }
 \usage{
 llplot(yper, spec)

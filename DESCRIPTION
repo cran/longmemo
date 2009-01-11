@@ -1,6 +1,6 @@
 Package: longmemo
-Version: 0.9-5
-Date: 2007-06-12
+Version: 0.9-6
+Date: 2009-01-11
 Author: S scripts originally by Jan Beran <jan.beran@uni-konstanz.de>
         Datasets via Brandon Whitcher <brandon@stat.washington.edu>.
 	Toplevel R functions and much more by Martin Maechler.
@@ -11,5 +11,5 @@ Description: Datasets and Functionality from the textbook
 Depends: R (>= 2.0.0)
 Enhances: fracdiff
 LazyData: yes
-License: GPL version 2 or later
-Packaged: Tue Jun 12 14:01:33 2007; maechler
+License: GPL (>= 2)
+Packaged: Sat Jan 10 19:58:58 2009; maechler

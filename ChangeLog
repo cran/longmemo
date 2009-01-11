@@ -1,3 +1,9 @@
+2009-01-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version, Date): 0.9-6
+
+	* man/specARIMA.Rd, ..: 3 Rd_parse fixes
+
 2007-06-12  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* R/polyFEXP.R (llplot, lxplot): define 'n'.

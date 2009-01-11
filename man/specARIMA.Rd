@@ -43,7 +43,7 @@ specARIMA(eta, p, q, m)
 \author{Jan Beran (principal) and Martin Maechler (fine tuning)}
 \seealso{The spectral estimate for fractional Gaussian noise,
   \code{\link{specFGN}}.
-  In general, \code{\link[ts]{spectrum}} and \code{\link{spec.ar}}.}
+  In general, \code{\link[ts]{spectrum}} and \code{\link{spec.ar}}.
 }
 \examples{
  str(r.7  <- specARIMA(0.7, m = 256, p = 0, q = 0))

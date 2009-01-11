@@ -13,8 +13,8 @@
 }
 \source{Jan Beran and Brandon Whitcher by E-mail in fall 1995.
 }
-\references{%% FIXME ---
-}
+% \references{%% FIXME ---
+% }
 \examples{
 data(ethernetTraffic)
 str(ethernetTraffic)

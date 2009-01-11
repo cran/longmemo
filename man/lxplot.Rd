@@ -2,7 +2,7 @@
 \alias{lxplot}
 \title{Log-X Plot of Spectrum}
 \description{
-  Log-X Plot of Spectrum}
+  Log-X Plot of Spectrum
 }
 \usage{
 lxplot(yper, spec)
