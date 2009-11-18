@@ -1,3 +1,9 @@
+2009-11-18  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version): 0.9-7
+
+	* man/specFGN.Rd, man/specARIMA.Rd: fix \link[]{}s.
+
 2009-01-10  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* DESCRIPTION (Version, Date): 0.9-6

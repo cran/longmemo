@@ -22,7 +22,7 @@ specFGN(eta, m, nsum = 200)
     }
 }
 \value{
-  an object of class \code{"spec"} (see also \code{\link[ts]{spectrum}})
+  an object of class \code{"spec"} (see also \code{\link{spectrum}})
   with components
   \item{freq}{the Fourier frequencies (in \eqn{(0,\pi)}) at which the
     spectrum is computed.}

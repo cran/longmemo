@@ -26,7 +26,7 @@ specARIMA(eta, p, q, m)
 
 }
 \value{
-  an object of class \code{"spec"} (see also \code{\link[ts]{spectrum}})
+  an object of class \code{"spec"} (see also \code{\link{spectrum}})
   with components
   \item{freq}{the Fourier frequencies (in \eqn{(0,\pi)}) at which the
     spectrum is computed.}
@@ -43,7 +43,7 @@ specARIMA(eta, p, q, m)
 \author{Jan Beran (principal) and Martin Maechler (fine tuning)}
 \seealso{The spectral estimate for fractional Gaussian noise,
   \code{\link{specFGN}}.
-  In general, \code{\link[ts]{spectrum}} and \code{\link{spec.ar}}.
+  In general, \code{\link{spectrum}} and \code{\link{spec.ar}}.
 }
 \examples{
  str(r.7  <- specARIMA(0.7, m = 256, p = 0, q = 0))
