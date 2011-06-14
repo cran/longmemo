@@ -1,11 +1,15 @@
 \name{llplot}
 \alias{llplot}
-\title{Log-Log Plot of Spectrum}
+\alias{lxplot}
+\title{Log-Log and Log-X Plot of Spectrum}
 \description{
-  Log-Log Plot of Spectrum
+  Log-Log and \dQuote{Log-X} plot of spectrum.
+  Very simple utilities, kept here mainly for back compatibility, as
+  they appear in the book scripts.
 }
 \usage{
 llplot(yper, spec)
+lxplot(yper, spec)
 }
 \arguments{
   \item{yper}{periodogram values}
@@ -14,7 +18,9 @@ llplot(yper, spec)
 %\value{
 % }
 \author{Jan Beran (principal) and Martin Maechler (speedup, fine tuning)}
-%\seealso{ ~~objects to SEE ALSO as \code{\link{~~fun~~}}, ~~~ }
+\seealso{\code{\link[stats]{spectrum}()} from standard \R (package
+  \pkg{stats}).
+}
 %\examples{
 %}
 \keyword{hplot}

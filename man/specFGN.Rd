@@ -24,8 +24,11 @@ specFGN(eta, m, nsum = 200)
 \value{
   an object of class \code{"spec"} (see also \code{\link{spectrum}})
   with components
-  \item{freq}{the Fourier frequencies (in \eqn{(0,\pi)}) at which the
-    spectrum is computed.}
+  \item{freq}{the Fourier frequencies \eqn{\omega_j \in (0,\pi)}{om_j in
+      (0,pi)}) at which the spectrum is computed.  Note that
+    \eqn{omega_j = 2\pi j/m}{om_j = 2*pi*j/m} for \eqn{j=1,..., m-1},
+    and \eqn{m = \left\lfloor\frac{n-1}{2}\right\rfloor}{m = floor((n-1)/2)}.
+  }
   \item{spec}{the \emph{scaled} values spectral density \eqn{f(\lambda)}
     values at the \code{freq} values of \eqn{\lambda}.\cr
     \eqn{f^*(\lambda) = f(\lambda) / \theta_1}{f*(lambda) = f(lambda) / theta1}
@@ -37,17 +40,21 @@ specFGN(eta, m, nsum = 200)
 \references{
   Jan Beran (1994).
   \emph{Statistics for Long-Memory Processes};
-  Chapman \& Hall, NY.
+  Chapman & Hall, NY.
 }
 \author{Jan Beran (principal) and Martin Maechler (fine tuning)}
+\seealso{The spectral estimate for fractional ARIMA,
+  \code{\link{specARIMA}}; more generally, \code{\link{spectrum}}.
+}
 \examples{
- str(r.7  <- specFGN(0.7, m = 100))
- str(r.7f <- specFGN(0.7, m = 100, nsum = 10000))
- all.equal(r.7, r.7f)# different in about 5th digit only
- str(r.5  <- specFGN(0.5, m = 100))
+ str(rg.7  <- specFGN(0.7, m = 100))
+ str(rg.7f <- specFGN(0.7, m = 100, nsum = 10000))
+ all.equal(rg.7, rg.7f)# different in about 5th digit only
+ str(rg.5  <- specFGN(0.5, m = 100))# { H = 0.5 <--> white noise ! }
 
- try(plot(r.7)) ## work around plot.spec() `bug' in R < 1.6.0
- plot(r.5, add = TRUE, col = "blue")
+ plot(rg.7) ## work around plot.spec() `bug' in R < 1.6.0
+ plot(rg.5, add = TRUE, col = "blue")
+%% TODO: show how to do a  log-log spectrum [nicely!]
 }
 \keyword{ts}
 \keyword{models}

@@ -20,11 +20,11 @@
  622--1284 (as in orig. source)
 }
 \references{
-  Tousson, O. (1925)
+  Tousson, O. (1925).
   Mémoire sur l'Histoire du Nil;
-  \emph{Mémoire de l'Institut d'Egypte}
+  \emph{Mémoire de l'Institut d'Egypte}.
 
-  Jan Beran (1994). Dataset no.~1, p.20--22.
+  Jan Beran (1994). Dataset no.1, p.20--22.
 }
 \examples{
 data(NileMin)

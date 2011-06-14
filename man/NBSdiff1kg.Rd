@@ -26,6 +26,6 @@
 }
 \examples{
 data(NBSdiff1kg)
-## maybe str(NBSdiff1kg) ; plot(NBSdiff1kg) ...
+plot(NBSdiff1kg)
 }
 \keyword{datasets}

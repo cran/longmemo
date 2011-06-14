@@ -4,7 +4,7 @@
 ### ------ =======================================
 
 ##
-## Splus-functions for the simulation
+## S-functions for the simulation
 ## of a series X(1),...,X(n) of fractional Gaussian noise
 ##____________________________________________________________________
 

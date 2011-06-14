@@ -6,3 +6,10 @@ o One of the 2 original ``main programs'' now has become a new function :
 
 o Documentation for the data sets
 
+o The other original ``main program'' is now a function, too
+   R/WhittleEst.R -->  WhittleEst()
+
+o WhittleEst()$spec  and  FEXPest()$spec  are now compatible
+   (e.g. see plots), ....
+
+

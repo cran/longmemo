@@ -15,7 +15,7 @@ specARIMA(eta, p, q, m)
 }
 \details{
   at the Fourier frequencies \eqn{2*\pi*j/n}, (\eqn{j=1,\dots,(n-1)}),
-%% FIXME: which of these two is ok
+%% FIXME: which of these two is ok ??
   cov(X(t),X(t+k)) = (sigma/(2*pi))*integral(exp(iuk)g(u)du).
 
   --- or rather -- FIXME --
@@ -29,7 +29,7 @@ specARIMA(eta, p, q, m)
   an object of class \code{"spec"} (see also \code{\link{spectrum}})
   with components
   \item{freq}{the Fourier frequencies (in \eqn{(0,\pi)}) at which the
-    spectrum is computed.}
+    spectrum is computed, see \code{freq} in \code{\link{specFGN}}.}
   \item{spec}{the \emph{scaled} values spectral density \eqn{f(\lambda)}
     values at the \code{freq} values of \eqn{\lambda}.\cr
     \eqn{f^*(\lambda) = f(\lambda) / \theta_1}{f*(lambda) = f(lambda) / theta1}
@@ -39,7 +39,8 @@ specARIMA(eta, p, q, m)
   \item{eta}{a named vector \code{c(H=H, phi=phi, psi=psi)} from input.}
   \item{method}{a character indicating the kind of model used.}
 }
-\references{Beran (1994) and more, see .... }%% FIXME
+\references{Beran (1994) and more, see .... %% FIXME
+}
 \author{Jan Beran (principal) and Martin Maechler (fine tuning)}
 \seealso{The spectral estimate for fractional Gaussian noise,
   \code{\link{specFGN}}.
@@ -51,6 +52,7 @@ specARIMA(eta, p, q, m)
                        m = 256, p = 3, q = 1))
  plot(r.7)
  plot(r.5)
+%% TODO: show how to do a  log-log spectrum [nicely!]
 }
 \keyword{ts}
 \keyword{models}

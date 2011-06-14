@@ -1,15 +1,14 @@
-o The other original ``main program'' should become a function, too
-   R/WhittleEst.R --> fWhittleEst() : not yet (see 'FIXME' in there).
-
-o Think about adding Graf's  *robust* estimators ("HUBINC" et al.).
-
-o Completely merge with the also unreleased package ../ts2test !!
-
-o Compare with   library( fracdiff )  :
-
+o Compare with   library( fracdiff )  -- and 'ts2test' :
     --> partly happened in "Semesterarbeit" by Thomas Grischott
 	(-> /u/maechler/save/papers/RGrischott-LongMem.pdf
-	  and /sfs/a/A/SfS-students/groman-Semarbeit/RAusw/ )
+	  and /sfs/a/A/SfS-students/groman/RAusw/ )
+  --> Completely merge with the also unreleased package ../ts2test !!
+
+o provide  logLik() methods .. For WhittleEst(), should be straightforward,
+  using Jan's book and Qeta().
+
+o Think about adding Graf's  *robust* estimators ("HUBINC" et al.).
+  ---> package ../ts2test/ which has M() !
 
 o specFGN(eta, m, nsum)  becomes quite slow for "large" m
   (e.g m = 2^16; the for loop takes time).

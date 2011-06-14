@@ -15,7 +15,9 @@ FEXPest(x, order.poly, pvalmax, verbose = FALSE)
     should be taken into account.  \code{order.poly = 0} is equivalent
     to a FARIMA(0,d,0) model.}
   \item{pvalmax}{maximal P-value -- the other iteration stopping
-    criterion.  Setting this to \code{1}, will use \code{order.poly} alone.}
+    criterion and \dQuote{model selection tuning parameter}.% << Martin Maechler
+    Setting this to \code{1}, will use \code{order.poly} alone, and
+    hence the final model order will be \code{= order.poly}.}
   \item{verbose}{logical indicating if iteration output should be printed.}
   \item{digits,\dots}{optional arguments for \code{print} method, see
     \code{\link{print.default}}.}
@@ -34,11 +36,15 @@ FEXPest(x, order.poly, pvalmax, verbose = FALSE)
   \item{early.stop}{logical indicating if \code{order.poly} is less than
     \code{max.order.poly}, i.e., the highest order polynomial terms were
     dropped because of a non-significant P-value.}
-  \item{freq, spec}{the Fourier frequencies \eqn{\omega_j} and spectral
-    estimate \eqn{f(\omega_j)}.}
-  \item{yper}{raw periodogram at Fourier frequencies \eqn{I(\omega_j)}.}
+  \item{spec}{the spectral estimate \eqn{f(\omega_j)}, at the Fourier
+    frequencies \eqn{\omega_j}.  Note that \code{.ffreq(x$n)}
+    recomputes the Fourier frequencies vector (from a fitted FEXP or
+    WhittleEst model \code{x}).}
+  \item{yper}{raw periodogram of (centered and scaled \code{x}) at
+    Fourier frequencies \eqn{I(\omega_j)}.}
 
-  There currently are a \code{\link{print}} and a \code{plot} method (see
+  There currently are methods for \code{\link{print}()},
+  \code{\link{plot}} and \code{\link{lines}} (see
   \code{\link{plot.FEXP}}) for objects of class \code{"FEXP"}.
 }
 \references{
@@ -46,16 +52,29 @@ FEXPest(x, order.poly, pvalmax, verbose = FALSE)
   Fitting long-memory models by generalized linear regression.
   \emph{Biometrika} \bold{80}, 817--822.
 
-  Beran, Jan (1994). \emph{Statistics for Long-Memory Processes};
-  Chapman \& Hall.
+  Beran, Jan (1994).
+  \emph{Statistics for Long-Memory Processes};
+  Chapman & Hall.
 }
 \author{Martin Maechler, using Beran's \dQuote{main program} in
   Beran(1994), p.234 ff
 }
-\seealso{\code{\link{plot.FEXP}}, ... }% < Whittle .. once we have it!
+\seealso{
+  \code{\link{WhittleEst}};
+  the plot method, \code{\link{plot.FEXP}}.
+}
 \examples{
 data(videoVBR)
-(fE <- FEXPest(videoVBR, order = 3, pvalmax = .5))
+(fE  <- FEXPest(videoVBR, order = 3, pvalmax = .5))
+(fE3 <- FEXPest(videoVBR, order = 3, pvalmax = 1 ))
+
+(fE7 <- FEXPest(videoVBR, order = 3, pvalmax = 0.10))
+##--> this also choses order 2, as "FE" :
+all.equal(fE $coef,
+          fE7$coef) # -> TRUE
+
+confint(fE)
+confint(fE7, level = 0.99)
 }
 \keyword{ts}
 

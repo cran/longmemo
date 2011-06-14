@@ -33,13 +33,14 @@ simGauss(autocov)
   The simulated series \eqn{X(1), \dots, X(n)}, an \R object of class
   \code{"ts"}, constructed from \code{\link[stats]{ts}()}.
 }
-\references{Beran (1994), 11.3.3, p.216~f, referring to
+\references{Beran (1994), 11.3.3, p.216 f, referring to
 
   Davis, R.B. and Harte, D.S. (1987).
   Tests for Hurst effect, \emph{Biometrika} \bold{74}, 95--102.
 }
 \author{Jan Beran (original) and Martin Maechler (\code{simGauss},
-  speedup, simplication)).}
+  speedup, simplication)).
+}
 \seealso{\code{\link{ckARMA0}} on which \code{simARMA0} relies, and
   \code{\link{ckFGN0}} on which \code{simFGN0} relies.
 }

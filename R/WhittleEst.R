@@ -215,8 +215,8 @@ per <- function(z) {
 
 
 
-Qeta <- function(eta, model = c("fGn","fARIMA"), n, yper, pq.ARIMA,
-                 verbose = getOption("verbose"), give.B.only = FALSE)
+Qeta <- function(eta, model = c("fGn","fARIMA"), n, yper,
+                 pq.ARIMA, give.B.only = FALSE)
 {
     ## Purpose: Calculation of A, B and Tn = A/B^2
     ## where A = 2pi/n sum 2*[I(lambda_j)/f(lambda_j)],
@@ -247,13 +247,11 @@ Qeta <- function(eta, model = c("fGn","fARIMA"), n, yper, pq.ARIMA,
     ## -------------------------------------------------------------------------
     ## Author: Jan Beran;  modified: Martin Maechler, Date: Sep 95.
 
-    if(verbose) cat("in function Qeta")
     model <- match.arg(model)
 
     stopifnot(is.numeric(yper),
               length(yper) == (n - 1) %/% 2)
 
-    H <- eta[1]
     ##         spectrum at Fourier frequencies
 
     if (model == "fARIMA") {
@@ -262,40 +260,27 @@ Qeta <- function(eta, model = c("fGn","fARIMA"), n, yper, pq.ARIMA,
         stopifnot(is.numeric(p), is.numeric(q),
                   p == round(p), q == round(q), p >= 0, q >= 0)
     }
-
-    ## FIXME : For MLE Minimization, only `B' is used --> do this via argument!
-
-
     sp <- switch(model,
-                 "fGn"   = specFGN(eta,n),
-                 "fARIMA" = specARIMA(eta,p,q,n)
-                 )
-
-    theta1 <- sp $theta1
-    spec  <- sp $spec
-
-    ## Tn := A / B^2
-
+		 "fGn"	  = specFGN  (eta, n ),
+		 "fARIMA" = specARIMA(eta,p,q,n))
+    ## not used (and *different* from 'theta1' below) : th1 <- sp $theta1
+    spec <- sp$spec
     yf <- yper/spec
-
-    B <- 2*(2*pi/n)*sum(yf)
+    B <- 2*(2*pi/n) * sum(yf)
 
     if(give.B.only)
         return(B)
     ## else
-    yfyf <- yf*yf
 
-    A <- 2*(2*pi/n)*sum(yfyf)
-
+    A <- 2*(2*pi/n)*sum(yf*yf)
     Tn <- A/(B^2)
     z <- sqrt(n)*(pi*Tn-1)/sqrt(2)
-
-    pval <- 1-pnorm(z)
     theta1 <- B/(2*pi)
 
-    list(n = n, H = H,
-         eta = eta, A = A, B = B, Tn = Tn ,z = z, pval = pval,
-         theta1 = theta1, spec = spec)
+    list(n = n, H = eta[1], eta = eta,
+	 A = A, B = B, Tn = Tn, z = z,
+	 pval = pnorm(z, lower.tail=FALSE), # = 1 - Phi(.)
+	 theta1 = theta1, spec = spec)
 }## Qeta()
 
 
@@ -306,149 +291,213 @@ Qeta <- function(eta, model = c("fGn","fARIMA"), n, yper, pq.ARIMA,
 ###
 ###MMMMMMMMMMMMMMMMMMMMMMM
 
-
-## ____ UNFINISHED ____  NOTA BENE: also need to "fix" Qeta() above!!
-if(FALSE)
-#########
-
-## Idea:  define these *inside* fWhittleEst(.) below !
-## ----   OTOH, have (somewhat) documented  ../man/Qeta.Rd
-## (and Jan has it as public function too!) ==============
-
-### FIXME:  Now copy the changes/technique from FEXPest() in ./polyFEXP.R
-###         				        -------      ~~~~~~~~~~~~
-
 ## Martin's new main function  *INSTEAD* of any main program :
-
-fWhittleEst <- function(x,
-                        model = c("fGn","fARIMA"),
-                        p, q,
-                        start = list(H= numeric(), AR= numeric(), MA=numeric()),
-                        verbose = getOption("verbose"))
+## NOTA BENE: no "loop" over different data segments
+WhittleEst <- function(x,
+		       ## periodogram of data:
+		       periodogr.x = per(if(scale) x/sd(x) else x)[2:((n+1) %/% 2)],
+		       n = length(x), scale = FALSE,
+		       model = c("fGn","fARIMA"), p, q,
+		       start = list(H= 0.5, AR= numeric(), MA=numeric()),
+		       verbose = getOption("verbose"))
 {
-    ## Author: Martin Maechler, 2004-2005,
-    ## NOTA BENE: no "loop" over different data segments !!
-
+    ## Author: Martin Maechler, 2004-2005; 2011
     cl <- match.call()
-    stopifnot(is.list(start),
-              sapply(start, is.numeric),
-              length(start$H) == 1)
+    stopifnot(is.list(start), sapply(start, is.numeric),
+	      length(start$H) == 1,
+	      n >= 4)
+
     ## If 'fGn', don't need p nor q  -- maybe use default p = 0, q = 0
     model <- match.arg(model)
     if(model == "fGn") {
-        stopifnot(length(start) == 1)   # namely only "$ H"
-        if(!missing(p)) {
-            if(p != 0) {
-                p <- 0
-                warning("'p' != 0 does not make senses in \"fGn\" model")
-            }
-        } else p <- 0
-        if(!missing(q)) {
-            if(q != 0) {
-                q <- 0
-                warning("'q' != 0 does not make senses in \"fGn\" model")
-            }
-
-        } else q <- 0
+	stopifnot(length(start) == 1 || # namely only "$ H"
+		  sapply(start[-1], length) == 0)## other components have 0 length
+	if(!missing(p) && p != 0)
+	    stop("'p' != 0 does not make sense in \"fGn\" model")
+	if(!missing(q) && q != 0)
+	    stop("'q' != 0 does not make sense in \"fGn\" model")
+	p <- q <- 0
     }
     else { ## fARIMA
-        if(0 > (p <- as.integer(p))) stop("must have integer p >= 0")
-        if(0 > (q <- as.integer(q))) stop("must have integer q >= 0")
-        stopifnot(length(start$AR) == p,
-                  length(start$MA) == q)
+	if(missing(p)) p <- length(start$AR)
+	else {
+	    stopifnot(length(start$AR) == p)
+	    if(0 > (p <- as.integer(p))) stop("must have integer p >= 0")
+	}
+	if(missing(q)) q <- length(start$MA)
+	else {
+	    stopifnot(length(start$MA) == q)
+	    if(0 > (q <- as.integer(q))) stop("must have integer q >= 0")
+	}
     }
+    pq. <- c(p,q)
 
     eta <- unlist(start) # c(H, ar[1:p], ma[1:q]) # where p=0, q=0 is possible
     H0 <- eta[1]
     M <- length(eta)
 
-    n <- length(x)
-    stopifnot(is.numeric(x), n >= 4)
-    nhalfm <- (n-1) %/% 2
-
     ## hmm: should give a warning when doing this:
-    H <- max(0.2,min(H0,0.9))           # avoid extreme initial values
+    H <- max(0.2,min(H0,0.9))		# avoid extreme initial values
     eta[1] <- H
 
-    ## standardize data
-    y <- x
-    y <- (y-mean(y))/sqrt(var(y))
+    ##---- find estimate -----------------------------------------------------------
 
-    ## periodogram of data
-    ffr <- 2*pi/n* (1:nhalfm)		# Fourier frequencies
-    yper <- per(y)[2:(nhalfm+1)]
+    Qmin <- function(eta) {
+	## Purpose: function to be minimized for MLE
+	## in R, we nicely have access to all the variables in "main" function
+	## ---------------------------------------------------------------------
+	## Author: Jan Beran;  modified: Martin Maechler, Date: Sep 95.
 
-
-    ## find estimate
-
-###################
-## definition of function to be minimized
-###################
-
-    Qmin <- function(etatry) {
-        ## Purpose: function to be minimized for MLE
-        ## in R, we nicely have access to all the variables in "main" function
-        ## ---------------------------------------------------------------------
-        ## Author: Jan Beran;  modified: Martin Maechler, Date: Sep 95.
-
-        result <- Qeta(etatry, model = model, n = n, yper = yper,
-                       pq.ARIMA = c(p,q), give.B.only = TRUE)
-        if(getOption("verbose")) cat("Qmin(etatry =",etatry,") -> B =",result,"\n")
-        drop(result)
+	r <- Qeta(eta, model = model, n = n, yper = periodogr.x, pq.ARIMA = pq.,
+		  give.B.only = TRUE)
+	if(verbose) cat("Qmin(eta =",eta,") -> B =", r,"\n")
+	drop(r)
     }
-
-
-    s <- 2*(1 - H)
 
     etatry <- eta
-    ##S+result <- nlmin(Qmin, etatry, xc.tol = 0.0000001, init.step = s)
-    ##S+         ----- FIXME: use optim() instead
-    ##S+eta <- result$x                   # = arg min _{eta} Qmin(eta, ..)
+    ##S+ s <- 2*(1 - H)
+    ##S+ result <- nlmin(Qmin, etatry, xc.tol = 0.0000001, init.step = s)
+    ##S+	  ----- FIXME: use optim() instead
+    ##S+ eta <- result$x		   # = arg min _{eta} Qmin(eta, ..)
     if(M == 1) { # one-dimensional -- only 'H'
-        res <- optimize(Qmin, lower = 0.1, upper = 0.99)
-        eta <- res$minimum
+	res <- optimize(Qmin, lower = 0.1, upper = 0.99)
+	eta <- c(H = res$minimum)
 
     } else { ## M > 1
-        res <- optim(Qmin, etatry)
-        eta <- res$par
+	res <- optim(par = etatry, fn = Qmin)
+	eta <- res$par
+	## names(eta) <- c("H",
+	##		paste("ar", seq_len(p), sep=""),
+	##		paste("ma", seq_len(q), sep=""))
+	if(res$convergence) {
+	    warning("optim(<negative Log.Lik.>) did not converge: 'convergence'=",
+		    res$convergence,"\n message:", res$message)
+	}
     }
 
+
     ## calculate goodness of fit statistic
-    Qresult <- Qeta(eta, n=n, yper = yper)
-    th1 <- Qresult$theta1
-    theta <- c(th1, eta)
+    Qresult <- Qeta(eta, model = model, n = n, yper = periodogr.x, pq.ARIMA = pq.)
+    theta1 <- Qresult$theta1
 
     ## output
+    if(verbose) {
+	cat("	H    =", eta[1], fill = TRUE)
+	cat("theta1  =", theta1, fill = TRUE)
+	if(length(eta) > 1)
+	    cat("eta[2:.]=", eta[-1], fill = TRUE)
+    }
+    Vcov <- switch(model,
+		 "fGn"	 = CetaFGN  (eta),
+		 "fARIMA" = CetaARIMA(eta,p,q)
+		 ) / n
+    ssd <- sqrt(diag(Vcov))
+    Cf <- cbind(Estimate = eta, "Std. Error" = ssd,
+		"z value" = eta/ssd,
+		"Pr(>|z|)" = 2 * pnorm(-abs(eta/ssd)))
+    dimnames(Vcov) <- list(names(eta), names(eta))
+    ##	 Hlow <- eta[1]-1.96*sqrt(Vcov[1,1])
+    ##	 Hup  <- eta[1]+1.96*sqrt(Vcov[1,1])
+    ##	 if(verbose) cat("95%-C.I. for H: [",Hlow,",",Hup,"]\n")
 
-    SD <- switch(model,
-                 "fGn"   = CetaFGN  (eta),
-                 "fARIMA" = CetaARIMA(eta,p,q)
-                 )
-    ## MM: Shouldn't SD be a symmetric matrix such that 'byrow' is not needed?
-    SD <- matrix(SD, ncol = M ,nrow = M ,byrow = TRUE)/n
+    ## etalow <- eta - 1.96*ssd
+    ## etaup <-	 eta + 1.96*ssd
 
-    cat("theta=",theta,fill = TRUE)
-    cat("H=",eta[1],fill = TRUE)
+    spec <- theta1 * Qresult$spec
 
-    ssd <- sqrt(diag(SD))
+    structure(list(call = cl, model = model, n = n, p=p, q=q,
+		   coefficients = Cf, theta1 = theta1, vcov = Vcov,
+		   periodogr.x = periodogr.x, spec = spec),
+	      class = "WhittleEst")
 
-    ##   Hlow <- eta[1]-1.96*sqrt(SD[1,1])
-    ##   Hup  <- eta[1]+1.96*sqrt(SD[1,1])
-    ##   if(verbose) cat("95%-C.I. for H: [",Hlow,",",Hup,"]\n")
+}# WhittleEst()
 
-    etalow <- eta - 1.96*ssd
-    etaup <-  eta + 1.96*ssd
+if(getRversion() < "2.13") nobs <- function (object, ...) UseMethod("nobs")
+nobs.WhittleEst <- nobs.FEXP <- function (object, ...) object$n
 
-    ## if(verbose) cat("periodogram is in yper\n")
+vcov.WhittleEst <- vcov.FEXP <- function (object, ...) object$vcov
 
-    fest <- th1 * Qresult$spec
-    ## if(verbose) cat("spectral density is in fest\n")
+## Define coef() methods --> confint.default() e.g., work correctly
+coef1 <- function(object, ...) { ## care to keep {row}names :
+    cf <- object$coefficients[, "Estimate", drop=FALSE]
+    structure(as.vector(cf), names=dimnames(cf)[[1]])
+}
+coef.WhittleEst <- coef.FEXP <- coef1
 
-    list(call = cl, model = model, n = n,
-         theta = theta, eta = eta, SD = SD,
-         ci.eta95 = cbind(etalow, etaup),
-         fest = fest)
+linesSpec <- function (x, type = "l", col = 4, lwd = 2, ...) {
+    ffr <- .ffreq(x$n)
+    lines(ffr, x$spec, type=type, col=col, lwd=lwd, ...)
+}
 
-    ## FIXME: add a class !!
+lines.WhittleEst <- lines.FEXP <- linesSpec
 
-}# end fWhittleEst()
+
+.WhittleModel <- function(mod)
+    c("fGn" = "fractional Gaussian noise",
+      "fARIMA" = "fractional ARIMA")[mod]
+
+print.WhittleEst <-
+    function (x, digits = getOption("digits"),
+	      ## signif.stars = getOption("show.signif.stars"),
+	      ...)
+{
+    stopifnot(is.character(mod <- x$model))
+    longMod <- .WhittleModel(mod)
+    cf <- x$coefficients
+    stopifnot(is.numeric(H.hat <- cf["H","Estimate"]))
+    cat(sprintf("'WhittleEst' Whittle estimator for  %s ('%s');	 call:\n",
+		longMod, mod),
+	paste(deparse(x$call), sep = "\n", collapse = "\n"), "\n",
+	if(mod == "fARIMA") sprintf("ARMA order (p=%d, q=%d); ", x$p, x$q),
+	"\t  time series of length  n = ", x$n,
+	".\n\n",
+	sprintf("H = %s\ncoefficients 'eta' =\n", ## FIXME "theta = (theta1,eta) ???
+		formatC(H.hat, digits= digits)), sep="")
+    printCoefmat(cf, digits = digits,
+		 signif.stars = FALSE, ## signif.stars = signif.stars,
+		 na.print = "NA", ...)
+    s.H <- cf["H", "Std. Error"]
+    Hround <- function(x) round(x, max(2, digits - 4))
+    seForm <- function(s) sprintf(" (%g)", Hround(s))
+    cat(" <==> d := H - 1/2 = ", Hround(H.hat-0.5), seForm(s.H), "\n\n", sep="")
+    ## FIXME: "theta" here, too
+    str(x[length(x)-(2:0)], no.list = TRUE)
+    invisible(x)
+}
+
+
+plot.WhittleEst <-
+    function (x, log = "xy", type = "l",
+              col.spec = 4, lwd.spec = 2,
+              xlab = NULL, ylab = expression(hat(f)(nu)),
+              main = paste(deparse(x$call)[1]), sub = NULL, ...)
+{
+    ### FIXME: improve 'main' -- rather indicate *estimated* H ! --
+    n2 <- length(x$periodogr.x)
+    n <- x$n
+    ffr <- 2 * pi/n * seq_len(n2)
+    if(is.null(xlab))
+        xlab <- bquote(list(nu == 2*pi*j / n,
+                            {} ~~ j %in% paste(1,ldots,.(n2)), n == .(n)))
+    if(is.null(sub))
+	sub <-
+	    sprintf("Data periodogram and fitted (Whittle Estimator '%s') spectrum%s",
+		    paste(x$model, if(x$model == "fARIMA")
+			  sprintf("(p=%d, q=%d)", x$p, x$q)),
+		    if(log == "xy") " [log - log]")
+
+    plot(ffr, x$periodogr.x, log = log, type = type,
+         xlab = xlab, ylab = ylab, main = main, sub = sub, ...)
+    lines(ffr, x$spec, col = col.spec, lwd = lwd.spec)
+}
+
+linesSpec <- function (x, type = "l", col = 4, lwd = 2, ...) {
+    ffr <- .ffreq(x$n)
+    lines(ffr, x$spec, type=type, col=col, lwd=lwd, ...)
+}
+
+lines.WhittleEst <- lines.FEXP <- linesSpec
+
+
+### TODO: summary method
+

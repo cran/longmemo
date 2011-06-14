@@ -22,7 +22,7 @@
   century, part 1.
   \emph{The Holocene} \bold{2}, 165--179.
 
-  Jan Beran (1994). Dataset no.~5, p.29--31.
+  Jan Beran (1994). Dataset no. 5, p.29--31.
 }
 \examples{
 data(NhemiTemp)

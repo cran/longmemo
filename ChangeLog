@@ -1,3 +1,24 @@
+2011-06-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* R/WhittleEst.R (coef1): define coef() methods, such that
+	confint() works via default method.
+
+	* R/WhittleEst.R (WhittleEst): use  scale=FALSE as new default.
+	Allow to specify the periodogram instead of 'x'.
+
+	* man/plot.FEXP.Rd: example using a different periodogram.
+
+2011-06-09  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version): 1.0-0
+
+	* R/WhittleEst.R (WhittleEst, print.WhittleEst, plot.WhittleEst):
+	finally debug, export, test a bit; new methods..
+
+	* man/WhittleEst.Rd: docu, including examples.
+
+	* NAMESPACE: add one; otherwise lazydata data sets are visible in search()
+
 2009-11-18  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* DESCRIPTION (Version): 0.9-7

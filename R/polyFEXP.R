@@ -92,45 +92,55 @@ FEXPest <- function(x, order.poly, pvalmax, verbose = FALSE)#, quiet = !verbose)
                                         if(j == 1) "ffr" else "poly(ffr, j)")))
 	glmM <- glm(frml, family = Gamma(link = "log"))
 
-	xglim <- model.matrix(glmM)
 	sRes <- summary(glmM, corr = FALSE)
-	Cf <- coef(sRes) # Matrix with col (Est, SE, t-val, P-val)
 	if(verbose) {
 	    cat("glm() [",j,"]:\n",sep='')
             print(sRes)
 	    cat("   P-val[eta]: ",
-                paste(format.pval(Cf[-1, "Pr(>|t|)"], eps=1e-9),
-                      collapse=", "), "\n", sep='')
+		paste(format.pval(sRes$coefficients[-1, "Pr(>|t|)"]),
+		      collapse= ", "),
+		"\n", sep='')
         }
-	list(X = xglim, coef = Cf)
+        sRes$Fitted <- unname(glmM$fitted.values)
+        sRes
     }
 
     ## loop for choosing polynomial
     for(j in 0:order.poly) {
 	r <- glimstep(j)
         ##   --------
-        early.stop <- j >= 1 && max(r$coef[-1, "Pr(>|t|)"]) > pvalmax
+        early.stop <- j >= 1 && (maxPv <- max(r$coefficients[-1, "Pr(>|t|)"])) > pvalmax
         if(early.stop) ## condition for stopping
 	    break ## poly found -- and forget "current"  r$theta etc
 	## else
 	r.last <- r
     }
-##     if(!early.stop && !quiet) warning("used full 'order.poly'")
+    if(verbose && !early.stop) message("used full 'order.poly'")
 
-    Cf <- r.last$coef
+    Cf <- r.last$coefficients
     dimnames(Cf)[[1]][2] <- "1 - 2*H"
     theta0 <- as.vector(Cf[, "Estimate"]) # drop names
-    ## FIXME(?):  Std.Err(H) = sqrt(1/4 Var(th[2]) = 1/2 S.E.(th[2])
+    ## Std.Err(H) = sqrt(1/4 Var(th[2]) = 1/2 S.E.(th[2])  --> print() method
     structure(list(call = cl, n = n,
                    H = (1-theta0[2])/2,
-                   coefficients = Cf,
-                   order.poly = if(early.stop) j-1:1 else order.poly,
-                   max.order.poly = order.poly, early.stop = early.stop,
-		   freq = ffr, yper = yper,
+		   coefficients = Cf, vcov = r.last$cov.scaled,## << FIXME: from R 2.14.0, use vcov(r.last)
+		   order.poly = if(early.stop) j-1:1 else order.poly,
+		   max.order.poly = order.poly, early.stop = early.stop,
+		   maxPv = if(early.stop) maxPv, yper = yper,
 		   ## spec = exp(c(cbind(1,xglim0) %*% theta0))),
-		   spec = exp(c(r.last$X %*% theta0))),
+		   ## spec = exp(c(r.last$X %*% theta0))),
+		   spec = r.last$ Fitted),
 	      class = "FEXP")
 } ## FEXPest()
+
+
+.ffreq <- function(n, full=FALSE) {
+    stopifnot(is.numeric(n), n == (n <- as.integer(n)))
+    n2 <- (if(full) n else n-1) %/% 2
+    2 * pi/n * seq_len(n2)
+}
+
+
 
 ## print method :
 print.FEXP <-
@@ -141,8 +151,9 @@ print.FEXP <-
         paste(deparse(x$call), sep = "\n", collapse = "\n"), "\n",
         sprintf("polynomial order %d - %s; H = %s\n coefficients 'theta' =\n",
                 as.integer(x$order.poly),
-                if(x$early.stop) "stopped early (P > pvalmax)" else
-                "user specified",
+		if(x$early.stop) sprintf("selected by stopping early (P = %s > pvalmax)",
+                                         format.pval(x$maxPv))
+                else "user specified",
                 formatC(x$H, digits= digits)))
     printCoefmat(x$coefficients, digits = digits,
 		 signif.stars = FALSE, ## signif.stars = signif.stars,
@@ -152,7 +163,7 @@ print.FEXP <-
     seForm <- function(s) sprintf(" (%g)", Hround(s))
     cat("  ==>            H =", Hround(x$H),     seForm(s.2H/2), "\n")
     cat(" <==> d := H - 1/2 =", Hround(x$H-0.5), seForm(s.2H/2), "\n\n")
-    str(x[length(x)-(2:0)], no.list = TRUE)
+    str(x[length(x)-(3:0)], no.list = TRUE)
     invisible(x)
 }
 
@@ -164,11 +175,10 @@ plot.FEXP <-
 {
     n2 <- length(x$yper)
     n <- x$n
-    fglim <- (1:n2) * 2 * pi/n
+    fglim <- 2 * pi/n * seq_len(n2)
     if(is.null(xlab))
-        xlab <- substitute(list(nu == 2*pi*j / n,
-                            {} ~~ j %in% paste(1,ldots,n2), n == N),
-                           list(N = n, n2 = n2))
+        xlab <- bquote(list(nu == 2*pi*j / n,
+                            {} ~~ j %in% paste(1,ldots,.(n2)), n == .(n)))
     if(is.null(sub))
         sub <- paste("Data periodogram and fitted (FEXP) spectrum",
                      if(log == "xy") " [log - log]")
@@ -179,6 +189,5 @@ plot.FEXP <-
     mtext(paste("used  order.poly =", x$order.poly),
           line = -1.2, col = col.spec)
 }
-
 
 ### TODO: summary method

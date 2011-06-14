@@ -22,7 +22,7 @@
   networks.
   \emph{IEEE Trans. Circuits. Syst. Video Technol.} \bold{2}, 49--59.
 
-  Jan Beran (1994). Dataset no.~2, p.22--23.
+  Jan Beran (1994). Dataset no. 2, p.22--23.
 }
 \examples{
 data(videoVBR)
