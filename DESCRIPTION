@@ -1,19 +1,22 @@
 Package: longmemo
-Version: 1.0-0
-Date: 2011-06-14
+Version: 1.1-1
+Date: 2018-09-14
 Author: S scripts originally by Jan Beran <jan.beran@uni-konstanz.de>;
         Datasets via Brandon Whitcher <brandon@stat.washington.edu>.
-        Toplevel R functions and much more by Martin Maechler.
+	Toplevel R functions and much more by Martin Maechler.
 Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
-Title: Statistics for Long-Memory Processes (Jan Beran) -- Data and
-        Functions
-Description: Datasets and Functionality from the textbook Jan Beran
-        (1994). Statistics for Long-Memory Processes; Chapman & Hall.
-Depends: stats
+Title: Statistics for Long-Memory Processes (Book Jan Beran), and
+        Related Functionality
+Description: Datasets and Functionality from
+  'Jan Beran' (1994). Statistics for Long-Memory Processes; Chapman & Hall.
+  Estimation of Hurst (and more) parameters for fractional Gaussian noise,
+  'fARIMA' and 'FEXP' models.
+Imports: graphics, utils, stats
 Enhances: fracdiff
 Suggests: sfsmisc
 BuildResaveData: no
 License: GPL (>= 2)
-Packaged: 2011-06-14 15:45:31 UTC; maechler
+NeedsCompilation: no
+Packaged: 2018-09-14 12:39:16 UTC; maechler
 Repository: CRAN
-Date/Publication: 2011-06-15 18:02:38
+Date/Publication: 2018-09-14 15:50:06 UTC

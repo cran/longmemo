@@ -7,6 +7,11 @@
 \description{
   Computes Whittle's approximate MLE for fractional Gaussian noise or
   fractional ARIMA (=: fARIMA) models, according to Beran's prescript.
+
+  Relies on minmizing \code{\link{Qeta}()} (\eqn{= \tilde{Q}(\eta)}{Q~(eta)},
+  which itself is based on the \dQuote{true} spectrum of the
+  corresponding process; for the spectrum, either
+  \code{\link{specFGN}} or \code{\link{specARIMA}} is used.
 }
 \usage{
 WhittleEst(x,
@@ -105,11 +110,11 @@ op <- if(require("sfsmisc"))
 plot(f.GN)
 plot(f.am00)
 plot(f.am11)
-par(op)
 
 et <- as.list(coef(f.am11))
 et$AR <- c(et$AR, 0, 0) # two more AR coefficients ..
 f.am31  <- WhittleEst(videoVBR, model = "fARIMA", start = et)
+## ... warning non nonconvergence,  but "kind of okay":
 lines(f.am31, col = "red3") ## drawing on top of ARMA(1,1) above - *small* diff
 
 f.am31 # not all three are "significant"
@@ -121,6 +126,8 @@ f.am21  <- WhittleEst(videoVBR, model = "fARIMA",
                       start = c(et[c("H","AR", "MA")]))
 f.am21
 lines(f.am21, col = adjustcolor("gold", .4), lwd=4)
+
+par(op)## (reset graphic layout)
 
 ##--> ?plot.WhittleEst  for an example using  'periodogr.x'
 %% ^^ "FIXME": do it here..

@@ -27,9 +27,13 @@ Qeta(eta, model = c("fGn","fARIMA"), n, yper, pq.ARIMA, give.B.only = FALSE)
   \eqn{B = 2\pi/n \sum_j 2*[I(\lambda_j)/f(\lambda_j)]^2}
   and the sum is taken over all Fourier frequencies
   \eqn{\lambda_j = 2\pi*j/n}, (\eqn{j=1,\dots,(n-1)/2}).
-  \eqn{f} is the spectral density of fractional Gaussian
-  noise or fractional ARIMA(p,d,q) with self-similarity parameter \eqn{H}.
 
+  \eqn{f} is the spectral density of fractional Gaussian noise or
+  fractional ARIMA(p,d,q) with self-similarity parameter \eqn{H} (and
+  \eqn{p} AR and \eqn{q} MA parameters in the latter case), and is
+  computed either by \code{\link{specFGN}} or \code{\link{specARIMA}}.
+
+%% FIXME:
   \deqn{cov(X(t),X(t+k)) = \int \exp(iuk) f(u) du}
 }
 \note{yper[1] must be the periodogram \eqn{I(\lambda_1)} at

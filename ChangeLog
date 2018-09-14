@@ -1,3 +1,21 @@
+2011-06-17  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* inst/doc/BspecFGN.Rnw: add vignette about Paxson's approximation
+	and my own ideas.  UNFINISHED ... --> ./TODO
+
+2011-06-15  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* R/WhittleEst.R (simFGN.fft): new function, basically using
+	Paxton(1997)'s code.
+
+2011-06-14  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version): 1.1-0, released .. not yet
+
+	* R/WhittleEst.R (B.specFGN): use the fast method of Paxton, found
+	in Rmetrics 'fArma', however clearly based on Paxton(1997) (and on
+	Taqqu's S version of that, whittle.S).
+
 2011-06-10  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* R/WhittleEst.R (coef1): define coef() methods, such that
@@ -10,7 +28,7 @@
 
 2011-06-09  Martin Maechler  <maechler@stat.math.ethz.ch>
 
-	* DESCRIPTION (Version): 1.0-0
+	* DESCRIPTION (Version): 1.0-0, released to CRAN 2011-06-14
 
 	* R/WhittleEst.R (WhittleEst, print.WhittleEst, plot.WhittleEst):
 	finally debug, export, test a bit; new methods..

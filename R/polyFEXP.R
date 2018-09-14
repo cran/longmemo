@@ -1,5 +1,3 @@
-####-*- mode: R; kept-old-versions: 12;	 kept-new-versions: 20; -*-
-
 ### ------ ==========================================
 ### 12.1.4 Approximate MLE for polynomial FEXP-models	-- book, p. 233-237
 ### ------ ==========================================
@@ -75,15 +73,16 @@ FEXPest <- function(x, order.poly, pvalmax, verbose = FALSE)#, quiet = !verbose)
     nhalfm <- (n-1) %/% 2
     ffr <- 2*pi/n* (1:nhalfm)		# Fourier frequencies
     xlong <- log(sqrt((1-cos(ffr))^2 + sin(ffr)^2)) # long-memory component
+    force(xlong)# getting rid of FP warning ('codecheck')
     ## = log |1 - e^{i x}|
     stopifnot((order.poly <- as.integer(order.poly)) >= 0)
 
     yper <- per(x)[2:(nhalfm+1)] # periodogram
 
     glimstep <- function(j) {
-
 	## generalized regression
 
+        ## FIXME?: use glm.fit() instead of glm() for efficiency
 	frml <- yper ~ xlong
 	if(j >= 1)
 	    frml <-

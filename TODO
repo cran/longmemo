@@ -1,15 +1,31 @@
-o Compare with   library( fracdiff )  -- and 'ts2test' :
+				-*- org -*-
+* TODO WhittleEst() not converging [-> f.am31 in man/WhittleEst.Rd ]: *do keep* the warning
+ in the resulting object and *do* show that with summary() / print()
+* TODO Compare with   library( fracdiff )  -- and 'ts2test' :
     --> partly happened in "Semesterarbeit" by Thomas Grischott
 	(-> /u/maechler/save/papers/RGrischott-LongMem.pdf
 	  and /sfs/a/A/SfS-students/groman/RAusw/ )
   --> Completely merge with the also unreleased package ../ts2test !!
 
-o provide  logLik() methods .. For WhittleEst(), should be straightforward,
+* TODO fixup ./man/specFGN.Rd  {*math* (\eqn{LaTeX}..) formula, MM's story,..}
+  ---> more clearly explain the approximation and 'k.approx', etc.
+  ---> relying on Paxson's paper (for now in ./Paxson-1997_FGN-CCR.pdf
+
+* TODO Martin Maechler thinks that Paxson's approach should/could be replaced by
+  a *better* one, using the Euler-Maclaurin formula for the sum.
+  ( --> inst/doc/Euler-MacLaurin.tex in MM's path )
+
+* TODO provide  logLik() methods .. For WhittleEst(), should be straightforward,
   using Jan's book and Qeta().
 
-o Think about adding Graf's  *robust* estimators ("HUBINC" et al.).
+* TODO Think about adding Graf's  *robust* estimators ("HUBINC" et al.).
   ---> package ../ts2test/ which has M() !
 
-o specFGN(eta, m, nsum)  becomes quite slow for "large" m
+* TODO specFGN(eta, m, nsum)  becomes quite slow for "large" m
   (e.g m = 2^16; the for loop takes time).
   Should do this in C code!
+  ==> even for n=1000, this is too slow!
+
+  >>>>>> Diethelm Wuertz got code from Taqqu, to do this *much* faster,
+  ---> see 'fArma' Rmetric package
+  (MM: ~/R/D/R-forge/Rmetrics/pkg/fArma/R/whittle.R

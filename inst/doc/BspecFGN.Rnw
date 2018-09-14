@@ -1,0 +1,315 @@
+\documentclass[article,nojss]{jss}
+%% NOTA BENE: More definitions --> further down
+%%%%%%%%%%%%
+%
+\author{Martin M\"achler \\ ETH Zurich%
+\\ June 2011 {\tiny (\LaTeX'ed \today)}%---- for now
+}
+\title{Numerical Explorations for Fast Spectrum of Fractional Gaussian Noise}
+% \def\mythanks{a version of this paper, for \pkg{nacopula} 0.4\_4, has been published
+%     in JSS, \url{http://www.jstatsoft.org/v39/i09}.}
+%% for pretty printing and a nice hypersummary also set:
+\Plainauthor{Martin M\"achler} %% comma-separated
+%\Plaintitle{Numerical Explorations for Fast Spectrum of Fractional Gaussian Noise}
+\Shorttitle{Fast Spectrum of Fractional Gaussian Noise}
+%
+%\VignetteIndexEntry{fast-specFGN}
+%\VignetteDepends{longmemo}
+%\VignetteDepends{sfsmisc}
+\SweaveOpts{engine=R,eps=FALSE,pdf=TRUE,width=7,height=5,strip.white=true,keep.source=TRUE}
+
+%% an abstract and keywords
+\Abstract{
+
+  The package \pkg{longmemo} ....
+
+  Paxson (1997) ... ...
+}
+
+\Keywords{Euler-Maclaurin Formula, Fractional Gaussian Noise, Spectrum}
+%% at least one keyword must be supplied
+
+%% publication information
+%% NOTE: Typically, this can be left commented and will be filled out by the technical editor
+%% \Volume{13}
+%% \Issue{9}
+%% \Month{September}
+%% \Year{2004}
+%% \Submitdate{2004-09-29}
+%% \Acceptdate{2004-09-29}
+
+%% The address of (at least) one author should be given
+%% in the following format:
+\Address{
+	Martin M\"achler\\
+	Seminar f\"ur Statistik, HG G~16\\
+	ETH Zurich\\
+	8092 Zurich, Switzerland\\
+	E-mail: \email{maechler@stat.math.ethz.ch}\\
+	URL: \url{http://stat.ethz.ch/people/maechler}
+}
+%% It is also possible to add a telephone and fax number
+%% before the e-mail in the following format:
+%% Telephone: +43/1/31336-5053
+%% Fax: +43/1/31336-734
+
+%% for those who use Sweave please include the following line (with % symbols):
+%% MM: this is "substituted" by  jss.cls:
+%% need no \usepackage{Sweave.sty}
+
+\usepackage[american]{babel}%for American English
+\usepackage{amsmath}%sophisticated mathematical formulas with amstex (includes \text{})
+\usepackage{mathtools}%fix amsmath deficiencies
+\usepackage{amssymb}%sophisticated mathematical symbols with amstex (includes \mathbb{})
+% \usepackage{amsthm}%theorem environments
+\usepackage{bm}%for bold math symbols: \bm (= bold math)
+\usepackage{enumitem}%for automatic numbering of new enumerate environments
+
+% This is already in jss above -- but withOUT the  fontsize=\small part !!
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontsize=\small,fontshape=sl}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{fontsize=\small,fontshape=sl}
+%% makes space between Sinput and Soutput smaller:
+\fvset{listparameters={\setlength{\topsep}{0pt}}}% !! quite an effect!
+%% ??? FIXME but it also influences all other lists, itemize, ... ???? FIXME
+%%
+\setkeys{Gin}{width=\textwidth}% Sweave.sty has {width=0.8\textwidth}
+
+\newcommand*{\R}{\proglang{R}}%{\textsf{R}}
+\newcommand*{\eps}{\varepsilon}
+\newcommand{\abs}[1]{\left| #1 \right|}%     \abs{ab}  -->  | ab |   ``absolut Betrag''
+\newcommand{\norm}[1]{\left\| #1 \right\|}%- \norm{ab} -->  || ab ||
+\newcommand*{\BB}{\mathcal{B}(\lambda, H)}
+
+
+%% journal specific aliases
+\newcommand*{\setcapwidth}[1]{}
+
+%% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+%% include your article here, just as usual
+%% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
+% \section[About Java]{About \proglang{Java}}
+%% Note: If there is markup in \(sub)section, then it has to be escape as above.
+%% Note: These are explained in '?RweaveLatex' :
+<<preliminaries, echo=FALSE, results=hide>>=
+op.orig <-
+options(width = 75,
+        SweaveHooks= list(fig=function() par(mar=c(5.1, 4.1, 1.1, 2.1))),
+        useFancyQuotes = FALSE,
+        ## for JSS, but otherwise MM does not like it:
+        ## prompt="R> ",
+        continue="  ")# 2 (or 3) blanks: use same length as 'prompt'
+
+Sys.setenv(LANGUAGE = "en")
+if(.Platform$OS.type != "windows")
+  Sys.setlocale("LC_MESSAGES","C")
+@
+%\section[Introduction]{Introduction \small~\footnote{\mythanks}}
+%\section{Introduction}
+
+\section{.. intro ..}
+
+The spectral density of fractional Gaussian noise (``fGn'') with Hurst
+parameter $H \in (0,1)$ is (\cite{BerJ86, BerJ94})
+\begin{equation}
+  \label{spec-def}
+  f_H(\lambda) = \mathcal{A}(\lambda, H) \left(\abs{\lambda}^{-2H-1} + \BB \right),
+\end{equation}
+for $\lambda\in [-\pi, \pi]$, where
+$\mathcal{A}(\lambda, H) == 2\sin(\pi H)\, \Gamma(2H+1)\, (1 -
+\cos\lambda)$, and
+\begin{equation}
+  \label{def-B}
+  \BB = \sum_{j=1}^\infty \left( (2\pi j + \lambda)^{-(2H+1)} +
+                                (2\pi j - \lambda)^{-(2H+1)} +
+                         \right).
+\end{equation}
+For the Whittle estimator of $H$ and also other purposes, its advantageous
+to be able to evaluate $f_H(\lambda_i)$ efficiently for a whole vector of $\lambda_i$,
+typically Fourier frequencies $\lambda_i = 2\pi i/n$, for
+$i=1,2,\dots,\lfloor (n-1)/2 \rfloor$.
+Such evaluation is problematic because of the infinite sum for $\BB$ in (\ref{def-B}).
+
+Traditionally, e.g., already in Appendix.... of \citet{BerJ94}, the
+infinite sum $\sum_{j=1}^\infty$ had been replaced by $\sum_j^{200}$ ---
+which was still not very efficient and not extremely accurate.
+In our \R\ package \pkg{longmemo}, we now provide the function
+\code{B.specFGN}$(\lambda$, $H)$ to compute $\BB$, using several ways to
+compute the infinite sum approximately, e.g., for $H = 0.75$ and $n = 500$, i.e., at 250
+Fourier frequencies,
+<<B.spec-ex>>=
+require("longmemo")
+fr <- .ffreq(500)
+B.1   <- B.specFGN(fr, H = 0.75, nsum =   200, k.approx=NA)
+B.xct <- B.specFGN(fr, H = 0.75, nsum = 10000, k.approx=NA)
+all.equal(B.xct, B.1)
+@
+which means that the 200 term approximation is accurate to \ 4 \ decimal
+digits for $H = .75$ but the accuracy is smaller for smaller $H$.
+%% FIXME: give numbers
+%% use  B.specFGN()
+
+For this reason,
+\citet{PaxsonV:1997:FGN} derived formulas for fast and stilly quite accurate approximations
+of $\BB$, noting that $\BB = \sum_{j=1}^\infty f(j; \lambda,H)$ for
+\begin{equation}
+  \label{def-f}
+  f(x; \lambda,H) = (2\pi x + \lambda)^{-(2H+1)} + (2\pi x - \lambda)^{-(2H+1)},
+\end{equation}
+and the fact that $\sum_{j=1}^\infty f(j)$ is a Riemann sum approximation
+of $\int_0^\infty f(x)\;\mathrm{d}x$ or $\int_1^\infty f(x)\;\mathrm{d}x$.
+
+<<fB-def, keep.source=FALSE>>=
+##               ^^^^^^ drop comments here
+##' @title The function f(x) used in the approximation of  B.specFGN()
+##' @param x  numeric vector of positive values
+##' @param lambda number in [-pi, pi]; practically in (0, pi]
+##' @param H  Hurst parameter in (0, 1); practically in (1/2, 1)
+##' @return
+##' @author Martin Maechler
+fB <- function(x, lambda, H) {
+    u <- 2*pi*x
+    h <- -(2*H+1)
+    (u + lambda)^h + (u - lambda)^h
+}
+@
+
+Now its clear that $f(x)$ cannot be computed (or ``is infinite'') at $x=0$,
+and more specifically, $f(x)$ tends to $\infty$ when $x\to \frac{\lambda}{2\pi}$,
+as in the second term of $f$, $2\pi x - \lambda$ only remains positive when
+$2\pi x > \lambda$. This is always fulfilled for $x in \{1,2,\dots\}$, as
+$\lambda < \pi$, but is problematic when considering
+$\int_0^b f(x)\;\mathrm{d}x$ as above.
+%
+Some illustrations of the function $f(x;\lambda, H)$ and its ``pole''
+at $\frac{\lambda}{2\pi}$ :
+<<curve-fB, fig=TRUE, echo=false, results=hide>>=
+draw.f <- function(lambda, H, ..., log = "",
+                   ylim= if(any("y" == strsplit(log,"")[[1]]))NULL else c(0, 2*fB1))
+{
+    fB1 <- fB(1, lambda=lambda, H = H)
+    curve(fB(x, lambda=lambda, H = H), ylim=ylim, log=log, xaxt="n", ...)
+    sfsmisc::eaxis(1)
+    mtext(bquote(list(lambda == .(lambda), H == .(H))))
+    abline(v = lambda / (2*pi), lty=2, lwd=3, col = "blue3")
+    xrng <- par("usr")[1:2]; if(xlog <- par("xlog")) xrng <- 10^xrng
+    abline(h = 0, lty=3, col="gray20")
+    j <- floor(xrng[1]):ceiling(xrng[2])
+    lines(j, fB(j, lambda=lambda, H = H), type = "h",
+          lty=5, lwd= 0.75, col = "gray40")
+    axis(1, at=j[j >= if(xlog) 2 else 1][1:2], col="green3")
+}
+
+op <- sfsmisc::mult.fig(4)$old.par
+draw.f(lambda=.001, H = 0.75, 0, 10)
+draw.f(lambda= 0.5, H = 0.75, 0, 10)
+draw.f(lambda= 1.5, H = 0.75, 0, 10)
+draw.f(lambda= 3.0, H = 0.75, 0, 10)
+
+<<curve-fB-2, fig=TRUE, echo=false, results=hide>>=
+sfsmisc::mult.fig(3)$old.par
+draw.f(lambda=.001, H = 0.99, .001, 100, log="xy")
+draw.f(lambda= .5,  H = 0.99, .001, 100, log="xy") ## !
+draw.f(lambda= 3.0, H = 0.51, .001, 100, log="xy") ## !
+par(op)
+@
+
+So, very clearly, Paxson's  first formula, using $\int_0^1 f(x)\;
+\mathrm{d}x$ is not feasible, as $f(x)$ is \emph{not} defined (or defined as $\infty$)
+for $x \le \lambda/(2\pi)$.
+
+However, his generalized formula, ``(7), p.~15'',
+\begin{equation}
+  \label{eq:Paxson-2}
+  \sum_{i=1}^\infty f_i \approx
+  \sum_{j=1}^k f_j + \frac 1 2\int_k^{k+1} f(x)\;\mathrm{d}x
+                  +          \int_{k+1}^\infty f(x)\;\mathrm{d}x,
+\end{equation}
+clearly \emph{is} usable for $k \ge 1$ (but not for $k=0$, contrary to what
+he suggests).
+Indeed, with \code{B.specFGN(}{$\lambda, H$,} \code{k.approx)}, we now
+provide the result of applying approximation (\ref{eq:Paxson-2}) to the
+infinite sum for $\BB$ in (\ref{def-B}).
+
+Paxson ended the $k=3$ approximation which he further improved
+considerably, empirically, by numerical comparison (and least squares fitting) with
+the ``accurate'' formula using \code{nsum = }$10'000$ terms.
+In the following section, we propose another improvement over Paxson's original idea:
+
+\section{Better approximations using the Euler--Maclaurin formula}
+
+Copied straight from %% FIXME !!
+{\large \url{http://en.wikipedia.org/wiki/Euler-Maclaurin_formula}} :
+
+If $n$ is a natural number and $f(x)$ is a smooth, i.e., sufficiently
+often differentiable function defined for all real numbers $x$ between 0 and
+$n$, then the integral
+\begin{equation} \label{eq:I}
+  I=\int_0^n f(x)\,dx
+\end{equation}
+can be approximated by the sum (or vice versa)
+\[
+  S=\frac{1}{2}f(0)+ f(1) +\cdots+ f(n-1) +\frac{1}{2}f(n)
+\]
+(see trapezoidal rule). The Euler--Maclaurin formula provides expressions
+for the difference between the sum and the integral in terms of the higher
+derivatives $f^{(k)}$ at the end points of the interval 0 and
+n. Explicitly, for any natural number $p$, we have
+
+\[
+    S-I = \sum_{k=2}^p {\frac{B_k}{k!}\left(f^{(k-1)}(n) - f^{(k-1)}(0)\right)} + R
+\]
+where $B_1 = -1/2$, $B_2 = 1/6$, $B_3 = 0$, $B_4 = -1/30$, $B_6 = 1/42$, $B_8 = -1/30$, \dots
+are the Bernoulli numbers, and $R$ is an error term which is normally small
+for suitable values of p. (The formula is often written with the subscript
+taking only even values, since the odd Bernoulli numbers are zero except
+for $B_1$.)
+
+Note that
+\[
+    -B_1(f(n)+f(0)) =\frac{1}{2}(f(n)+f(0)).
+\]
+Hence, we may also write the formula as follows:
+\begin{equation}
+  \label{eq:EM-form}
+  \sum_{i=0}^n f(i) =
+    \int^n_0f(x)\,dx-B_1(f(n)+f(0))+\sum_{k=1}^p\frac{B_{2k}}{(2k)!}\left(f^{(2k-1)}(n)-f^{(2k-1)}(0)\right)+R.
+\end{equation}
+
+.............
+
+In the context of computing asymptotic expansions of sums and series,
+usually the most useful form of the Euler--Maclaurin formula is
+\[
+    \sum_{n=a}^b f(n) \sim \int_a^b f(x)\,dx + \frac{f(a)+f(b)}{2} +
+          \sum_{k=1}^\infty \,\frac{B_{2k}}{(2k)!}\left(f^{(2k-1)}(b)-f^{(2k-1)}(a)\right), \,
+\]
+where $a$ and $b$ are integers. %[2]
+Often the expansion remains valid even after taking the limits ${a\to
+  -\infty}$ or ${b\to +\infty}$, or both.
+%
+In many cases the integral on the right-hand side can be evaluated in
+closed form in terms of elementary functions even though the sum on the
+left-hand side cannot.
+
+{\footnotesize (end of citation from Wikipedia)}
+
+--- ---
+
+
+\section{Session Information}
+
+<<sessionInfo, results=tex>>=
+toLatex(sessionInfo())
+<<finalizing, echo=FALSE>>=
+options(op.orig)
+@
+
+\section{Conclusion}
+
+\bibliography{longmemo}
+
+\end{document}

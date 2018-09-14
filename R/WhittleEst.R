@@ -25,7 +25,7 @@ CetaFGN <- function(eta, m = 10000, delta = 1e-9)
         stop("eta[] must have length at least 1") #FIXME
     if(2 > (m <- as.integer(m)))
         stop(sQuote("m")," must be at least 2")
-    mhalfm <- (m-1) %/% 2:2
+    mhalfm <- (m-1) %/% 2L
 
     ## partial derivatives of log f (at each Fourier frequency)
 
@@ -50,7 +50,7 @@ CetaARIMA <- function(eta, p,q, m = 10000, delta = 1e-9)
 
   if(1 > (M <- length(eta))) stop("eta[] must have length at least 1")#FIXME
   if(2 > (m <- as.integer(m)))stop(sQuote("m")," must be at least 2")#FIXME
-  mhalfm <- (m-1) %/% 2:2
+  mhalfm <- (m-1) %/% 2L
 
   ## partial derivatives of log f (at each Fourier frequency)
   lf <- matrix(ncol = M, nrow = mhalfm)
@@ -70,7 +70,87 @@ CetaARIMA <- function(eta, p,q, m = 10000, delta = 1e-9)
 
 }## CetaARIMA()
 
-specFGN <- function(eta, m, nsum = 200)
+
+##' Fast computation of B(lambda, H) for spectrum f(.) of fractional gaussian noise
+##'
+##' MM: Found in fArma (Rmetrics) source, but then on Murad Taqqu's webpage :
+##' -> "Statistical methods for long-range dependence"
+##'  ---> "Whittle's Approximate MLE"
+##'  == http://math.bu.edu/people/murad/methods/whittle/   and from there,
+##' http://math.bu.edu/people/murad/methods/implementations/whittle/whittle.S
+##' and wget --mirror http://..../whittle.S confirms the file date of Jan.8, 1997
+##' The crucial comment in there says
+##'>>  Above change made to speed up routine.  Due to Vern Paxson.   3/23/95 VT
+##'
+##' @title Compute B(lambda, H) for the spectrum of fractional Gaussian noise
+##' @param H hurst parameter in (1/2, 1) - can be outside, here
+##' @param lambd numeric vector of frequencies in [0, pi]
+##' @param k.approx integer or (NULL, NA, ..): either fast approximation order, or choosing to use slow sum
+##' @param adjust logical indicating (only for k.approx == 3, the default) that Paxson's empirical adjustment should also be used
+##' @param nsum if the slow sum is used (e.g. for k.approx = NA), the number of terms.
+##' @return vector of (approximate) spectrum values f(lambd[])
+##' @author Martin Maechler based on Vern Paxson's - Paxson(1997) - and Jan Beran's original code
+B.specFGN <- function(lambd, H, k.approx= 3, adjust= (k.approx == 3), nsum = 200)
+{
+    stopifnot(is.numeric(d <- -2*H-1), length(H) == 1)
+    pi2 <- 2*pi
+    if(!is.numeric(k.approx) || !is.finite(k.approx)) {
+	## use original slow sum formula (of Jan Beran / Martin Maechler):
+	stopifnot(is.numeric(nsum), nsum >= 5)
+	j <- pi2*(1:nsum) # sum the smallest terms first
+	## Using outer() instead of the loop is	 *slower* (!)
+	## B <- colSums(abs(outer(j, lambd, "+"))^d + abs(outer(j, lambd, "-"))^d)
+	B <- lambd
+	for(i in seq_along(B))
+	    B[i] <- sum(abs(j + lambd[i])^d + abs(j - lambd[i])^d)
+	return(B)
+    }
+    else stopifnot((k.approx <- as.integer(k.approx)) >= 1)
+    ## use Vern Paxson's approximation(s):
+    ## NB: His S code in Appendix A of Paxson(1997) did *not* adjust,
+    ##	   even though he derived the 'adjust' part there.
+
+    a1 <- pi2 + lambd
+    b1 <- pi2 - lambd
+    d. <- -2*H
+    if(k.approx == 3) {
+	## B <- FGN.B.est(lambd, H)  --- of Paxson's  FGN.B.est <- funct:on(lambd, H)
+	## Author: Vern Paxson -> M.Taqqu -> Diethelm Wuertz -> M.Maechler
+	## a1 <- pi2   +lambd; b1 <- pi2   - lambd
+	## a2 <- pi2*2 +lambd; b2 <- pi2*2 - lambd
+	## a2 = a1 + pi2; b2 <- b1 + pi2
+	a3 <- pi2*3 +lambd; b3 <- pi2*3 - lambd
+	## a4 <- pi2*4 +lambd; b4 <- pi2*4 - lambd
+	## a4 = a3 + pi2   b4 = b3 + pi2
+	B <- a1^d + b1^d + (a1+pi2)^d+ (b1+pi2)^d + a3^d+ b3^d +
+	    (a3^d. + b3^d. + (a3+pi2)^d. + (b3+pi2)^d.)/ (8*pi*H)
+	## end{FGN.B.est()}
+
+	if(adjust)
+	    (1.0002 - 0.000134*lambd) * (B - 2^(-7.65*H - 7.4)) else B
+    }
+    else { ## general 'k'  {Martin Maechler, using Paxson(1997), p.11}
+	if(adjust) warning("'adjust=TRUE' is not available when k.approx != 3")
+	sum <- (aj <- a1)^d + (bj <- b1)^d
+	a.1 <- aj+ pi2
+	b.1 <- bj+ pi2
+	for(jj in seq_len(k.approx-1)) { ## for( j in 2:k)  {when k >= 2}
+	    sum <- sum + (aj <- a.1)^d + (bj <- b.1)^d
+	    a.1 <- aj+ pi2
+	    b.1 <- bj+ pi2
+	}
+	sum + (aj^d. + bj^d. + a.1^d. + b.1^d.)/ (8*pi*H)
+    }
+}
+
+
+##' @title Computation of spectrum of Fractional Gaussian Noise
+##' @param eta parameter vector; only using H := eta[1] = Hurst parameter in (1/2, 1)
+##' @param m "sample size", i.e, 2 * number of Fourier frequencies at which f(.) is to be computed.
+##' @param ... optional arguments passed on to B.specFGN()
+##' @return vector of (approximate) spectrum values f(lambd[])
+##' @author Jan Beran Murad Taqqu -> Diethelm Wuertz -> Martin Maechler
+specFGN <- function(eta, m, ...)
 {
   ## Purpose: Calculation of the spectral density f of
   ## normalized fractional Gaussian noise with self-similarity parameter H=H
@@ -95,21 +175,11 @@ specFGN <- function(eta, m, nsum = 200)
 
   if(length(eta) > 1) warning("eta[2..] are not used")
   H <- eta[1]
-  hh <- -2*H-1
+  m2 <- (m-1) %/% 2L
+  lambd <- 2*pi/m * seq_len(m2)
 
-  mhalfm <- (m-1) %/% 2:2
-  ##-- Fourier frequencies lambda_j = 2*pi*(j-1)/m (j=1,2,...,(m-1)/2)
-  lambd <- 2*pi/m * (1:mhalfm)
-
-  ##-----   calculation of f at Fourier frequencies   -------
-  j <- 2*pi*(1:nsum)
-  ## Using outer() instead of the loop is  *slower* (!)
-  ##spec <- colSums(abs(outer(j, lambd, "+"))^hh + abs(outer(j, lambd, "-"))^hh)
-  spec <- double(mhalfm)
-  for(i in 1:mhalfm)
-      spec[i] <- sum(abs(j + lambd[i])^hh + abs(j - lambd[i])^hh)
-
-  spec <- sin(pi*H)/pi * gamma(-hh) * (1-cos(lambd)) * (lambd^hh + spec)
+  B. <- B.specFGN(lambd, H, ...)
+  spec <- sin(pi*H)/pi * gamma(2*H+1) * (1-cos(lambd))* (lambd^(-2*H-1) + B.)
 
   ##----- adjust spectrum such that int{log(spec)} = 0 -------
   theta1 <- exp(2/m * sum(log(spec)))
@@ -119,6 +189,37 @@ specFGN <- function(eta, m, nsum = 200)
   class(r) <- "spec"
   r
 }## specFGN()
+
+
+## This is Paxson(1997)'s proposal : -- n = 1e5 ==> is about twice as fast as simFGN0()
+## TODO: show this in a small vignette // explore other 'n'
+simFGN.fft <- function(n, H, ...) {
+    ## Returns a Fourier-generated sample path
+    ## of a "self similar" process, consisting
+    ## of n points and Hurst parameter H
+    ## (n should be even).
+    stopifnot(n %% 2L == 0, n >= 2, is.numeric(H), length(H) == 1L)
+    n <- n/2
+    lambda <- pi/n * seq_len(n)# ((1:n)*pi)/n
+
+    ## An approximation of the ideal power spectrum for
+    ## fractional Gaussian noise
+    ## at the given frequencies lambda and the given Hurst parameter H :
+    f <- 2 * sin(pi*H) * gamma(2*H+1) * (1-cos(lambda)) *
+        (lambda^(-2*H-1) + B.specFGN(lambda, H, ...))
+    ## Adjust for estimating power spectrum via periodogram.
+    f <- f * rexp(n)
+
+    ## Construct corresponding complex numbers with random phase.
+    z <- complex(modulus = sqrt(f),
+                 argument = 2*pi*runif(n))
+    ## Last element should have zero phase.
+    z[n] <- abs(z[n])
+    ## Expand z to correspond to a Fourier transform of a real-valued signal.
+    ## Inverse FFT gives sample path.
+    Re(fft(c(0, z, Conj(z[n:2])), inverse=TRUE))
+}
+
 
 specARIMA <- function(eta, p,q, m)
 {
@@ -144,14 +245,14 @@ specARIMA <- function(eta, p,q, m)
   ##---------parameters for the calculation of f--------
 
   if(0 > (p <- as.integer(p)))
-	stop("`p'  must be non-negative integer")
+	stop("'p'  must be non-negative integer")
   if(0 > (q <- as.integer(q)))
-        stop("`q'  must be non-negative integer")
-  if(1+p+q != (M <- length(eta)))
+        stop("'q'  must be non-negative integer")
+  if(1+p+q != length(eta))
         stop("eta[] must have length 1+p+q")
   if(2 > (m <- as.integer(m)))
         stop(sQuote("m")," must be at least 2")
-  mhalfm <- (m-1) %/% 2:2
+  mhalfm <- (m-1) %/% 2L
 
   H <- eta[1]
 
@@ -232,7 +333,7 @@ Qeta <- function(eta, model = c("fGn","fARIMA"), n, yper,
     ## -------------------------------------------------------------------------
     ## INPUT: H
     ##        (n,nhalfm = trunc[(n-1)/2] and the
-    ##         nhalfm-dimensional  GLOBAL vector `yper' must be defined.)
+    ##         nhalfm-dimensional  GLOBAL vector 'yper' must be defined.)
     ##   (n,yper): now arguments {orig. w/ defaults 'n=n, yper=yper'}
 
     ## OUTPUT: list(n=n,H=H,A=A,B=B,Tn=Tn,z=z,pval=pval,
