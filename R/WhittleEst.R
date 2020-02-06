@@ -412,7 +412,8 @@ WhittleEst <- function(x,
     model <- match.arg(model)
     if(model == "fGn") {
 	stopifnot(length(start) == 1 || # namely only "$ H"
-		  sapply(start[-1], length) == 0)## other components have 0 length
+                  ## or all other components have 0 length
+		  all(lengths(start[-1]) == 0))
 	if(!missing(p) && p != 0)
 	    stop("'p' != 0 does not make sense in \"fGn\" model")
 	if(!missing(q) && q != 0)

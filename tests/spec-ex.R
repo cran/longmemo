@@ -1,5 +1,10 @@
 library(longmemo)
 
+capabilities()
+str(.Machine)
+str(.Platform)
+sessionInfo() # will change often.. but if we need the info, get it here
+
 ###-------------- Comparison of Paxson's approximation to B(): -----------------
 
 B.o.specFGN <- function(lam, H, nsum=200)

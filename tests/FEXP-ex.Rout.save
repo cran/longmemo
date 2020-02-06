@@ -1,8 +1,7 @@
 
-R version 2.13.0 Patched (2011-06-09 r56106)
-Copyright (C) 2011 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
-Platform: x86_64-unknown-linux-gnu (64-bit)
+R Under development (unstable) (2020-02-04 r77768) -- "Unsuffered Consequences"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -35,7 +34,7 @@ Coefficients:
 (Intercept)   6.6596     0.0544     122   <2e-16 ***
 xlong        -0.8109     0.0625     -13   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 0.98001)
 
@@ -61,7 +60,7 @@ Coefficients:
 xlong        -0.7436     0.1128   -6.59  1.7e-10 ***
 ffr          -0.0836     0.1085   -0.77     0.44    
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 0.99118)
 
@@ -88,7 +87,7 @@ xlong           -0.910      0.193   -4.72  3.6e-06 ***
 poly(ffr, j)1    0.861      2.730    0.32     0.75    
 poly(ffr, j)2   -1.958      1.703   -1.15     0.25    
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 1.0013)
 
@@ -117,7 +116,7 @@ ffr         -0.083562   0.108507 -0.7701    0.4418
 > plot(fF)
 > 
 > data(videoVBR)
-> for(max.poly in 0:3) {
+> for(max.poly in 0:2) {
 +     cat("-------------------------------------------\n",
 +         "max.poly= ", max.poly,":\n------------\n",sep='')
 +     fv <- FEXPest(videoVBR, order.poly=max.poly, pvalmax= .5, verbose=TRUE)
@@ -140,7 +139,7 @@ Coefficients:
 (Intercept)   3.9654     0.0534    74.2   <2e-16 ***
 xlong        -2.6269     0.0607   -43.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 1.4247)
 
@@ -172,7 +171,7 @@ Coefficients:
 (Intercept)   3.9654     0.0534    74.2   <2e-16 ***
 xlong        -2.6269     0.0607   -43.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 1.4247)
 
@@ -198,7 +197,7 @@ Coefficients:
 xlong        -1.3650     0.0895   -15.2   <2e-16 ***
 ffr          -1.1554     0.0871   -13.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 0.97997)
 
@@ -230,7 +229,7 @@ Coefficients:
 (Intercept)   3.9654     0.0534    74.2   <2e-16 ***
 xlong        -2.6269     0.0607   -43.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 1.4247)
 
@@ -256,7 +255,7 @@ Coefficients:
 xlong        -1.3650     0.0895   -15.2   <2e-16 ***
 ffr          -1.1554     0.0871   -13.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 0.97997)
 
@@ -283,7 +282,7 @@ xlong           -0.713      0.149   -4.79  2.2e-06 ***
 poly(ffr, j)1  -33.864      2.610  -12.97  < 2e-16 ***
 poly(ffr, j)2    8.177      1.644    4.97  9.1e-07 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 0.96466)
 
@@ -298,9 +297,14 @@ used full 'order.poly'
 $H
 [1] 0.85633
 
+> max.poly <- 3
+> cat("-------------------------------------------\n",
++     "max.poly= ", max.poly,":\n------------\n",sep='')
 -------------------------------------------
 max.poly= 3:
 ------------
+> ## IGNORE_RDIFF_BEGIN
+> (fv <- FEXPest(videoVBR, order.poly=max.poly, pvalmax= .5, verbose=TRUE))
 glm() [0]:
 
 Call:
@@ -315,7 +319,7 @@ Coefficients:
 (Intercept)   3.9654     0.0534    74.2   <2e-16 ***
 xlong        -2.6269     0.0607   -43.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 1.4247)
 
@@ -341,7 +345,7 @@ Coefficients:
 xlong        -1.3650     0.0895   -15.2   <2e-16 ***
 ffr          -1.1554     0.0871   -13.3   <2e-16 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 0.97997)
 
@@ -368,7 +372,7 @@ xlong           -0.713      0.149   -4.79  2.2e-06 ***
 poly(ffr, j)1  -33.864      2.610  -12.97  < 2e-16 ***
 poly(ffr, j)2    8.177      1.644    4.97  9.1e-07 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 0.96466)
 
@@ -396,7 +400,7 @@ poly(ffr, j)1 -33.84546    3.53106   -9.59  < 2e-16 ***
 poly(ffr, j)2   8.16767    2.09431    3.90  0.00011 ***
 poly(ffr, j)3   0.00946    1.37726    0.01  0.99452    
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for Gamma family taken to be 0.96664)
 
@@ -407,11 +411,6 @@ AIC: 4802
 Number of Fisher Scoring iterations: 7
 
    P-val[eta]: 0.00067, < 2e-16, 0.00011, 0.99452
-$H
-[1] 0.85633
-
-> 
-> fv
 'FEXP' estimator, call:  FEXPest(x = videoVBR, order.poly = max.poly, pvalmax = 0.5, verbose = TRUE) 
  polynomial order 2 - selected by stopping early (P = 0.995 > pvalmax); H = 0.85633
  coefficients 'theta' =
@@ -427,8 +426,12 @@ poly(ffr, j)2   8.177403   1.644290   4.9732 9.096e-07
  $ maxPv     : num 0.995
  $ yper      : num [1:499] 5145 22812 40031 7476 33737 ...
  $ spec      : num [1:499] 51315 30682 22521 17979 15029 ...
+> ## IGNORE_RDIFF_END
 > plot(fv, type = "o", cex = 0.5)
 > 
 > cat('Time elapsed: ', proc.time(),'\n') # for ``statistical reasons''
-Time elapsed:  0.663 0.066 0.796 0 0 
+Time elapsed:  0.214 0.031 0.316 0.002 0.005 
 > 
+> proc.time()
+   user  system elapsed 
+  0.216   0.036   0.316 

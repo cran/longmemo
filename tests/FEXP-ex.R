@@ -7,14 +7,18 @@ fF
 plot(fF)
 
 data(videoVBR)
-for(max.poly in 0:3) {
+for(max.poly in 0:2) {
     cat("-------------------------------------------\n",
         "max.poly= ", max.poly,":\n------------\n",sep='')
     fv <- FEXPest(videoVBR, order.poly=max.poly, pvalmax= .5, verbose=TRUE)
     print(fv["H"])
 }
-
-fv
+max.poly <- 3
+cat("-------------------------------------------\n",
+    "max.poly= ", max.poly,":\n------------\n",sep='')
+## IGNORE_RDIFF_BEGIN
+(fv <- FEXPest(videoVBR, order.poly=max.poly, pvalmax= .5, verbose=TRUE))
+## IGNORE_RDIFF_END
 plot(fv, type = "o", cex = 0.5)
 
 cat('Time elapsed: ', proc.time(),'\n') # for ``statistical reasons''

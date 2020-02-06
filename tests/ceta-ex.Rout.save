@@ -1,8 +1,7 @@
 
-R version 2.13.0 Patched (2011-06-13 r56131)
-Copyright (C) 2011 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
-Platform: x86_64-unknown-linux-gnu (64-bit)
+R Under development (unstable) (2020-02-04 r77768) -- "Unsuffered Consequences"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -28,7 +27,8 @@ Type 'q()' to quit R.
 > .proctime00 <- proc.time()
 > 
 > ## CetaARIMA(*) does NOT depend on H !!
-> for(H in H0) {
+> hiH <- H0 >= 0.9375
+> for(H in H0[!hiH]) {
 +     cat("H=", mform(H,wid=7),
 +         "; CetaFGN:", mform(CetaFGN(eta = c(H = H), m = 256)),
 +         "; C.ARIMA(*,0,0):",mform(CetaARIMA(eta= c(H = H), m = 256,p=0,q=0)),
@@ -48,10 +48,19 @@ H= 0.8125  ; CetaFGN: 0.504453  ; C.ARIMA(*,0,0): 0.716336
 H= 0.84375 ; CetaFGN: 0.508528  ; C.ARIMA(*,0,0): 0.716336  
 H= 0.875   ; CetaFGN: 0.512195  ; C.ARIMA(*,0,0): 0.716336  
 H= 0.90625 ; CetaFGN: 0.515363  ; C.ARIMA(*,0,0): 0.716336  
+> ## Ignoring differences for 0.9375 and 0.99 : -- only just for --no-long-double case
+> ## IGNORE_RDIFF_BEGIN
+> for(H in H0[hiH]) {
++     cat("H=", mform(H,wid=7),
++         "; CetaFGN:", mform(CetaFGN(eta = c(H = H), m = 256)),
++         "; C.ARIMA(*,0,0):",mform(CetaARIMA(eta= c(H = H), m = 256,p=0,q=0)),
++         "\n")
++ }
 H= 0.9375  ; CetaFGN: 0.517558  ; C.ARIMA(*,0,0): 0.716336  
 H= 0.96875 ; CetaFGN: 0.514657  ; C.ARIMA(*,0,0): 0.716336  
 H= 0.98    ; CetaFGN: 0.504415  ; C.ARIMA(*,0,0): 0.716336  
 H= 0.99    ; CetaFGN: 0.454094  ; C.ARIMA(*,0,0): 0.716336  
+> ## IGNORE_RDIFF_END
 > 
 > for(em in 6:18) { ## oops -- becomes slow [specFGN() !] from about em = 13:
 +     m <- 2^em
@@ -59,7 +68,7 @@ H= 0.99    ; CetaFGN: 0.454094  ; C.ARIMA(*,0,0): 0.716336
 +     cat("m= 2^",formatC(em, wid=2),": ",
 +         " C_{FGN}= ", mform(CetaFGN(eta = c(H = 0.7), m = m)),
 +         "; C_{AR; 1,1}= ", mform(cAA[1,1]),        "\n", sep="")
-+     print(cAA)
++     print(cAA, digits = if(em %in% 10:12) 6 else 7) ## .. for --no-long-double
 +     cat("\n")
 + }
 m= 2^ 6:  C_{FGN}= 0.601991 ; C_{AR; 1,1}= 48.3811  
@@ -87,22 +96,22 @@ m= 2^ 9:  C_{FGN}= 0.462289 ; C_{AR; 1,1}= 10.8095
 [3,]  -0.352969  -5.049236  6.875056
 
 m= 2^10:  C_{FGN}= 0.448197 ; C_{AR; 1,1}= 8.97598  
-           [,1]      [,2]       [,3]
-[1,]  8.9759811 -8.570552 -0.0957133
-[2,] -8.5705517 13.005072 -5.2497156
-[3,] -0.0957133 -5.249716  6.8318382
+           [,1]     [,2]       [,3]
+[1,]  8.9759811 -8.57055 -0.0957133
+[2,] -8.5705518 13.00507 -5.2497156
+[3,] -0.0957133 -5.24972  6.8318382
 
 m= 2^11:  C_{FGN}= 0.439848 ; C_{AR; 1,1}= 7.97542  
-            [,1]      [,2]        [,3]
-[1,]  7.97542212 -7.745846  0.02041194
-[2,] -7.74584590 12.324343 -5.34344294
-[3,]  0.02041194 -5.343443  6.81474199
+           [,1]     [,2]       [,3]
+[1,]  7.9754221 -7.74585  0.0204119
+[2,] -7.7458459 12.32434 -5.3434429
+[3,]  0.0204119 -5.34344  6.8147420
 
 m= 2^12:  C_{FGN}= 0.434909 ; C_{AR; 1,1}= 7.40081  
-            [,1]      [,2]        [,3]
-[1,]  7.40081364 -7.258863  0.07637145
-[2,] -7.25886293 11.911096 -5.38984903
-[3,]  0.07637145 -5.389849  6.80746968
+           [,1]     [,2]       [,3]
+[1,]  7.4008136 -7.25886  0.0763715
+[2,] -7.2588629 11.91110 -5.3898490
+[3,]  0.0763715 -5.38985  6.8074697
 
 m= 2^13:  C_{FGN}= 0.432003 ; C_{AR; 1,1}= 7.06202  
            [,1]      [,2]       [,3]
@@ -130,7 +139,7 @@ m= 2^16:  C_{FGN}= 0.428757 ; C_{AR; 1,1}= 6.66781
 
 m= 2^17:  C_{FGN}= 0.428435 ; C_{AR; 1,1}= 6.62548  
            [,1]      [,2]       [,3]
-[1,]  6.6254802 -6.577171  0.1320888
+[1,]  6.6254801 -6.577171  0.1320888
 [2,] -6.5771713 11.311036 -5.4377057
 [3,]  0.1320888 -5.437706  6.8015925
 
@@ -143,5 +152,8 @@ m= 2^18:  C_{FGN}= 0.428253 ; C_{AR; 1,1}= 6.6007
 > 
 > ## Last Line:
 > cat('Time elapsed: ', proc.time() - .proctime00,'\n')
-Time elapsed:  2.253 0.039 2.316 0 0 
+Time elapsed:  0.3 0.03 0.331 0 0 
 > 
+> proc.time()
+   user  system elapsed 
+  0.383   0.062   0.486 

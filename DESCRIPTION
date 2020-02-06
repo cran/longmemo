@@ -1,6 +1,6 @@
 Package: longmemo
-Version: 1.1-1
-Date: 2018-09-14
+Version: 1.1-2
+Date: 2020-02-05
 Author: S scripts originally by Jan Beran <jan.beran@uni-konstanz.de>;
         Datasets via Brandon Whitcher <brandon@stat.washington.edu>.
 	Toplevel R functions and much more by Martin Maechler.
@@ -17,6 +17,6 @@ Suggests: sfsmisc
 BuildResaveData: no
 License: GPL (>= 2)
 NeedsCompilation: no
-Packaged: 2018-09-14 12:39:16 UTC; maechler
+Packaged: 2020-02-05 11:11:23 UTC; maechler
 Repository: CRAN
-Date/Publication: 2018-09-14 15:50:06 UTC
+Date/Publication: 2020-02-06 06:20:16 UTC
