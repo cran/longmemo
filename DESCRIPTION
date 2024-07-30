@@ -1,10 +1,13 @@
 Package: longmemo
-Version: 1.1-2
-Date: 2020-02-05
-Author: S scripts originally by Jan Beran <jan.beran@uni-konstanz.de>;
-        Datasets via Brandon Whitcher <brandon@stat.washington.edu>.
-	Toplevel R functions and much more by Martin Maechler.
-Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
+Version: 1.1-3
+Date: 2024-07-30
+Authors@R: c(
+  person("Jan", "Beran", role = "aut", email = "<jan.beran@uni-konstanz.de>",
+         comment = "original S functions and scripts"),
+  person("Martin", "Maechler", role = c("cre", "aut"), email = "maechler@stat.math.ethz.ch",
+         comment = c("Toplevel R functions and much more", ORCID = "0000-0002-8685-9910")),
+  person("Brandon", "Whitcher", role = "ctb", email = "<brandon@stat.washington.edu>",
+         comment = "Datasets"))
 Title: Statistics for Long-Memory Processes (Book Jan Beran), and
         Related Functionality
 Description: Datasets and Functionality from
@@ -17,6 +20,11 @@ Suggests: sfsmisc
 BuildResaveData: no
 License: GPL (>= 2)
 NeedsCompilation: no
-Packaged: 2020-02-05 11:11:23 UTC; maechler
+Packaged: 2024-07-30 08:38:14 UTC; maechler
+Author: Jan Beran [aut] (original S functions and scripts),
+  Martin Maechler [cre, aut] (Toplevel R functions and much more,
+    <https://orcid.org/0000-0002-8685-9910>),
+  Brandon Whitcher [ctb] (Datasets)
+Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 Repository: CRAN
-Date/Publication: 2020-02-06 06:20:16 UTC
+Date/Publication: 2024-07-30 09:30:02 UTC

@@ -520,19 +520,17 @@ nobs.WhittleEst <- nobs.FEXP <- function (object, ...) object$n
 vcov.WhittleEst <- vcov.FEXP <- function (object, ...) object$vcov
 
 ## Define coef() methods --> confint.default() e.g., work correctly
-coef1 <- function(object, ...) { ## care to keep {row}names :
+coef.WhittleEst <-
+coef.FEXP <- function(object, ...) { ## care to keep {row}names :
     cf <- object$coefficients[, "Estimate", drop=FALSE]
     structure(as.vector(cf), names=dimnames(cf)[[1]])
 }
-coef.WhittleEst <- coef.FEXP <- coef1
 
-linesSpec <- function (x, type = "l", col = 4, lwd = 2, ...) {
+lines.WhittleEst <-
+lines.FEXP <- function (x, type = "l", col = 4, lwd = 2, ...) {
     ffr <- .ffreq(x$n)
     lines(ffr, x$spec, type=type, col=col, lwd=lwd, ...)
 }
-
-lines.WhittleEst <- lines.FEXP <- linesSpec
-
 
 .WhittleModel <- function(mod)
     c("fGn" = "fractional Gaussian noise",
@@ -592,14 +590,6 @@ plot.WhittleEst <-
          xlab = xlab, ylab = ylab, main = main, sub = sub, ...)
     lines(ffr, x$spec, col = col.spec, lwd = lwd.spec)
 }
-
-linesSpec <- function (x, type = "l", col = 4, lwd = 2, ...) {
-    ffr <- .ffreq(x$n)
-    lines(ffr, x$spec, type=type, col=col, lwd=lwd, ...)
-}
-
-lines.WhittleEst <- lines.FEXP <- linesSpec
-
 
 ### TODO: summary method
 

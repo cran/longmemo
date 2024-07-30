@@ -1,7 +1,7 @@
 
-R Under development (unstable) (2020-02-04 r77768) -- "Unsuffered Consequences"
-Copyright (C) 2020 The R Foundation for Statistical Computing
-Platform: x86_64-pc-linux-gnu (64-bit)
+R Under development (unstable) (2024-07-29 r86934) -- "Unsuffered Consequences"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -16,7 +16,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(longmemo)
-> 
+>
 > options(digits = 5) # since we want to "R CMD Rdiff" the output
 > data(NileMin)
 > fF <- FEXPest(NileMin, order.poly=3, pvalmax= .5, verbose=TRUE)
@@ -25,12 +25,8 @@ glm() [0]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--3.138  -1.046  -0.318   0.350   2.455  
-
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
+            Estimate Std. Error t value Pr(>|t|)
 (Intercept)   6.6596     0.0544     122   <2e-16 ***
 xlong        -0.8109     0.0625     -13   <2e-16 ***
 ---
@@ -50,15 +46,11 @@ glm() [1]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--3.140  -1.047  -0.312   0.326   2.578  
-
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
+            Estimate Std. Error t value Pr(>|t|)
 (Intercept)   6.7895     0.1784   38.06  < 2e-16 ***
 xlong        -0.7436     0.1128   -6.59  1.7e-10 ***
-ffr          -0.0836     0.1085   -0.77     0.44    
+ffr          -0.0836     0.1085   -0.77     0.44
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -76,16 +68,12 @@ glm() [2]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--3.162  -1.030  -0.302   0.330   2.700  
-
 Coefficients:
-              Estimate Std. Error t value Pr(>|t|)    
+              Estimate Std. Error t value Pr(>|t|)
 (Intercept)      6.657      0.055  120.97  < 2e-16 ***
 xlong           -0.910      0.193   -4.72  3.6e-06 ***
-poly(ffr, j)1    0.861      2.730    0.32     0.75    
-poly(ffr, j)2   -1.958      1.703   -1.15     0.25    
+poly(ffr, j)1    0.861      2.730    0.32     0.75
+poly(ffr, j)2   -1.958      1.703   -1.15     0.25
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -99,22 +87,22 @@ Number of Fisher Scoring iterations: 6
 
    P-val[eta]: 3.56e-06, 0.753, 0.251
 > fF
-'FEXP' estimator, call:  FEXPest(x = NileMin, order.poly = 3, pvalmax = 0.5, verbose = TRUE) 
+'FEXP' estimator, call:  FEXPest(x = NileMin, order.poly = 3, pvalmax = 0.5, verbose = TRUE)
  polynomial order 1 - selected by stopping early (P = 0.753 > pvalmax); H = 0.87178
  coefficients 'theta' =
              Estimate Std. Error t value  Pr(>|t|)
 (Intercept)  6.789501   0.178383 38.0614 < 2.2e-16
 1 - 2*H     -0.743568   0.112790 -6.5925 1.729e-10
 ffr         -0.083562   0.108507 -0.7701    0.4418
-  ==>            H = 0.87  (0.06) 
- <==> d := H - 1/2 = 0.37  (0.06) 
+  ==>            H = 0.87  (0.06)
+ <==> d := H - 1/2 = 0.37  (0.06)
 
  $ early.stop: logi TRUE
  $ maxPv     : num 0.753
  $ yper      : num [1:331] 56564 5379 52555 1098 2916 ...
  $ spec      : num [1:331] 28365 16928 12512 10095 8545 ...
 > plot(fF)
-> 
+>
 > data(videoVBR)
 > for(max.poly in 0:2) {
 +     cat("-------------------------------------------\n",
@@ -130,12 +118,8 @@ glm() [0]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--4.504  -1.124  -0.478   0.260   3.252  
-
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
+            Estimate Std. Error t value Pr(>|t|)
 (Intercept)   3.9654     0.0534    74.2   <2e-16 ***
 xlong        -2.6269     0.0607   -43.3   <2e-16 ***
 ---
@@ -162,12 +146,8 @@ glm() [0]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--4.504  -1.124  -0.478   0.260   3.252  
-
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
+            Estimate Std. Error t value Pr(>|t|)
 (Intercept)   3.9654     0.0534    74.2   <2e-16 ***
 xlong        -2.6269     0.0607   -43.3   <2e-16 ***
 ---
@@ -187,12 +167,8 @@ glm() [1]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--4.062  -1.060  -0.371   0.336   2.461  
-
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
+            Estimate Std. Error t value Pr(>|t|)
 (Intercept)   5.6377     0.1434    39.3   <2e-16 ***
 xlong        -1.3650     0.0895   -15.2   <2e-16 ***
 ffr          -1.1554     0.0871   -13.3   <2e-16 ***
@@ -220,12 +196,8 @@ glm() [0]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--4.504  -1.124  -0.478   0.260   3.252  
-
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
+            Estimate Std. Error t value Pr(>|t|)
 (Intercept)   3.9654     0.0534    74.2   <2e-16 ***
 xlong        -2.6269     0.0607   -43.3   <2e-16 ***
 ---
@@ -245,12 +217,8 @@ glm() [1]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--4.062  -1.060  -0.371   0.336   2.461  
-
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
+            Estimate Std. Error t value Pr(>|t|)
 (Intercept)   5.6377     0.1434    39.3   <2e-16 ***
 xlong        -1.3650     0.0895   -15.2   <2e-16 ***
 ffr          -1.1554     0.0871   -13.3   <2e-16 ***
@@ -271,12 +239,8 @@ glm() [2]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--3.983  -1.016  -0.332   0.295   2.717  
-
 Coefficients:
-              Estimate Std. Error t value Pr(>|t|)    
+              Estimate Std. Error t value Pr(>|t|)
 (Intercept)      3.799      0.044   86.37  < 2e-16 ***
 xlong           -0.713      0.149   -4.79  2.2e-06 ***
 poly(ffr, j)1  -33.864      2.610  -12.97  < 2e-16 ***
@@ -310,12 +274,8 @@ glm() [0]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--4.504  -1.124  -0.478   0.260   3.252  
-
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
+            Estimate Std. Error t value Pr(>|t|)
 (Intercept)   3.9654     0.0534    74.2   <2e-16 ***
 xlong        -2.6269     0.0607   -43.3   <2e-16 ***
 ---
@@ -335,12 +295,8 @@ glm() [1]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--4.062  -1.060  -0.371   0.336   2.461  
-
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
+            Estimate Std. Error t value Pr(>|t|)
 (Intercept)   5.6377     0.1434    39.3   <2e-16 ***
 xlong        -1.3650     0.0895   -15.2   <2e-16 ***
 ffr          -1.1554     0.0871   -13.3   <2e-16 ***
@@ -361,12 +317,8 @@ glm() [2]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--3.983  -1.016  -0.332   0.295   2.717  
-
 Coefficients:
-              Estimate Std. Error t value Pr(>|t|)    
+              Estimate Std. Error t value Pr(>|t|)
 (Intercept)      3.799      0.044   86.37  < 2e-16 ***
 xlong           -0.713      0.149   -4.79  2.2e-06 ***
 poly(ffr, j)1  -33.864      2.610  -12.97  < 2e-16 ***
@@ -388,17 +340,13 @@ glm() [3]:
 Call:
 glm(formula = frml, family = Gamma(link = "log"))
 
-Deviance Residuals: 
-   Min      1Q  Median      3Q     Max  
--3.983  -1.016  -0.332   0.295   2.717  
-
 Coefficients:
-               Estimate Std. Error t value Pr(>|t|)    
+               Estimate Std. Error t value Pr(>|t|)
 (Intercept)     3.79852    0.04403   86.27  < 2e-16 ***
 xlong          -0.71379    0.20852   -3.42  0.00067 ***
 poly(ffr, j)1 -33.84546    3.53106   -9.59  < 2e-16 ***
 poly(ffr, j)2   8.16767    2.09431    3.90  0.00011 ***
-poly(ffr, j)3   0.00946    1.37726    0.01  0.99452    
+poly(ffr, j)3   0.00946    1.37726    0.01  0.99452
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -411,7 +359,7 @@ AIC: 4802
 Number of Fisher Scoring iterations: 7
 
    P-val[eta]: 0.00067, < 2e-16, 0.00011, 0.99452
-'FEXP' estimator, call:  FEXPest(x = videoVBR, order.poly = max.poly, pvalmax = 0.5, verbose = TRUE) 
+'FEXP' estimator, call:  FEXPest(x = videoVBR, order.poly = max.poly, pvalmax = 0.5, verbose = TRUE)
  polynomial order 2 - selected by stopping early (P = 0.995 > pvalmax); H = 0.85633
  coefficients 'theta' =
                 Estimate Std. Error  t value  Pr(>|t|)
@@ -419,8 +367,8 @@ Number of Fisher Scoring iterations: 7
 1 - 2*H        -0.712654   0.148702  -4.7925 2.181e-06
 poly(ffr, j)1 -33.864487   2.610367 -12.9731 < 2.2e-16
 poly(ffr, j)2   8.177403   1.644290   4.9732 9.096e-07
-  ==>            H = 0.86  (0.07) 
- <==> d := H - 1/2 = 0.36  (0.07) 
+  ==>            H = 0.86  (0.07)
+ <==> d := H - 1/2 = 0.36  (0.07)
 
  $ early.stop: logi TRUE
  $ maxPv     : num 0.995
@@ -428,10 +376,10 @@ poly(ffr, j)2   8.177403   1.644290   4.9732 9.096e-07
  $ spec      : num [1:499] 51315 30682 22521 17979 15029 ...
 > ## IGNORE_RDIFF_END
 > plot(fv, type = "o", cex = 0.5)
-> 
+>
 > cat('Time elapsed: ', proc.time(),'\n') # for ``statistical reasons''
-Time elapsed:  0.214 0.031 0.316 0.002 0.005 
-> 
+Time elapsed:  0.198 0.051 0.247 0.003 0.004
+>
 > proc.time()
-   user  system elapsed 
-  0.216   0.036   0.316 
+   user  system elapsed
+  0.201   0.055   0.247

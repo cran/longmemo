@@ -1,13 +1,20 @@
 \name{FEXPest}
+\title{Fractional EXP (FEXP) Model Estimator}
 \alias{FEXPest}
 \alias{print.FEXP}
-\title{Fractional EXP (FEXP) Model Estimator}
+\alias{.ffreq}
 \description{
-  Computes Beran's Fractional EXP or \sQuote{FEXP} model estimator.
+  \code{FEXPest(x, *)} computes Beran's Fractional EXP or \sQuote{FEXP}
+  model estimator.
+
+  \code{.ffreq(n)} returns the Fourier frequencies \eqn{\frac{2\pi j}{n}}{2pi j/n}
+  (of a time series of length \code{n}).
 }
 \usage{
 FEXPest(x, order.poly, pvalmax, verbose = FALSE)
 \method{print}{FEXP}(x, digits = getOption("digits"), \dots)
+
+.ffreq(n, full = FALSE)
 }
 \arguments{
   \item{x}{numeric vector representing a time series.}
@@ -21,9 +28,13 @@ FEXPest(x, order.poly, pvalmax, verbose = FALSE)
   \item{verbose}{logical indicating if iteration output should be printed.}
   \item{digits,\dots}{optional arguments for \code{print} method, see
     \code{\link{print.default}}.}
+  %% freq
+  \item{n}{a positive integer, typically the length of a time series.}
+  \item{full}{logical indicating if \code{n \%/\% 2} or by default
+    \dQuote{only} \code{(n-1) \%/\% 2} values should be returned.}
 }
 \value{
-  An object of class \code{FEXP} which is basically a list with components
+  \code{FEXPest(x,..)} returns an object of class \code{FEXP}, basically a list with components
   \item{call}{the function \code{\link{call}}.}
   \item{n}{time series length \code{length(x)}.}
   \item{H}{the \dQuote{Hurst} parameter which is simply \code{(1-theta[2])/2}.}
@@ -75,6 +86,11 @@ all.equal(fE $coef,
 
 confint(fE)
 confint(fE7, level = 0.99)
+
+.ffreq(8)
+.ffreq(8, TRUE)
+stopifnot(all.equal((1:3)/4,
+                    .ffreq(8) / pi))
 }
 \keyword{ts}
 
