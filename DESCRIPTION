@@ -1,6 +1,6 @@
 Package: longmemo
-Version: 1.1-3
-Date: 2024-07-30
+Version: 1.1-4
+Date: 2025-07-08
 Authors@R: c(
   person("Jan", "Beran", role = "aut", email = "<jan.beran@uni-konstanz.de>",
          comment = "original S functions and scripts"),
@@ -20,11 +20,11 @@ Suggests: sfsmisc
 BuildResaveData: no
 License: GPL (>= 2)
 NeedsCompilation: no
-Packaged: 2024-07-30 08:38:14 UTC; maechler
+Packaged: 2025-07-10 14:10:06 UTC; maechler
 Author: Jan Beran [aut] (original S functions and scripts),
-  Martin Maechler [cre, aut] (Toplevel R functions and much more,
+  Martin Maechler [cre, aut] (Toplevel R functions and much more, ORCID:
     <https://orcid.org/0000-0002-8685-9910>),
   Brandon Whitcher [ctb] (Datasets)
 Maintainer: Martin Maechler <maechler@stat.math.ethz.ch>
 Repository: CRAN
-Date/Publication: 2024-07-30 09:30:02 UTC
+Date/Publication: 2025-07-11 08:10:02 UTC

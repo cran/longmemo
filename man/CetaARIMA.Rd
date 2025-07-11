@@ -25,8 +25,11 @@ CetaARIMA(eta, p, q, m = 10000, delta = 1e-9)
 \author{Jan Beran (principal) and Martin Maechler (fine tuning)}
 \examples{
  (C.7  <- CetaARIMA(0.7, m = 256, p = 0, q = 0))
- (C.5  <- CetaARIMA(eta = c(H = 0.5, phi=c(-.06, 0.42, -0.36), psi=0.776),
-                    m = 256, p = 3, q = 1))
+  C.5  <- CetaARIMA(eta = c(H = 0.5, phi=c(-.06, 0.42, -0.36), psi=0.776),
+                    m = 256, p = 3, q = 1)
+ ## add row and col names to the cov.matrix (as it is "normal" in R):
+ nmC <- c("H", paste0("phi", 1:3), paste0("psi", 1)); dimnames(C.5) <- list(nmC, nmC)
+ C.5
 }
 \keyword{ts}
 \keyword{models}

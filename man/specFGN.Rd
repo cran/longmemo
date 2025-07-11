@@ -11,7 +11,7 @@
   component of the spectrum \eqn{f_H(\lambda)}.
 }
 \usage{
-  specFGN(eta, m, \dots)
+  specFGN(eta, m, \dots, spec.only = FALSE)
 B.specFGN(lambd, H, k.approx=3, adjust = (k.approx == 3), nsum = 200)
 }
 \arguments{
@@ -19,6 +19,9 @@ B.specFGN(lambd, H, k.approx=3, adjust = (k.approx == 3), nsum = 200)
   \item{m}{sample size determining Fourier frequencies.}
   \item{\dots}{optional arguments for \code{B.specFGN()}:
     \code{k.approx}, etc}
+  \item{spec.only}{\code{\link{logical}} indicating that only the numeric
+    vector of spectral density estimates (the \code{spec} component of the
+    full list) is returned.}
   \item{lambd}{numeric vector of frequencies in [0, pi]}
   \item{H}{Hurst parameter in \eqn{(\frac 1 2, 1)}{(1/2, 1)}, (can be outside, here).}
   \item{k.approx}{either integer (the order of the Paxson approximation), or
@@ -50,7 +53,8 @@ B.specFGN(lambd, H, k.approx=3, adjust = (k.approx == 3), nsum = 200)
   %% see more comments in   ../R/WhittleEst.R
 }
 \value{
-  \code{specFGN()} returns an object of class \code{"spec"} (see also
+  \code{specFGN()} returns an object of class \code{"spec"} (by default,
+  when \code{spec.only} is false) see also
   \code{\link{spectrum}}) with components
   \item{freq}{the Fourier frequencies \eqn{\omega_j \in (0,\pi)}{om_j in
       (0,pi)}) at which the spectrum is computed.  Note that

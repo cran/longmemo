@@ -30,12 +30,12 @@ CetaFGN <- function(eta, m = 10000, delta = 1e-9)
     ## partial derivatives of log f (at each Fourier frequency)
 
     lf <- matrix(ncol = M,nrow = mhalfm)
-    f0 <- specFGN(eta,m)$spec
+    f0 <- specFGN(eta,m, spec.only=TRUE)
 
     for(j in (1:M)) { ## FIXME{MM}: better not using same delta for all [j]
         etaj <- eta
         etaj[j] <- etaj[j]+delta
-        fj <- specFGN(etaj,m)$spec
+        fj <- specFGN(etaj, m, spec.only=TRUE)
         lf[,j] <- log(fj/f0)/delta
     }
 
@@ -55,12 +55,12 @@ CetaARIMA <- function(eta, p,q, m = 10000, delta = 1e-9)
   ## partial derivatives of log f (at each Fourier frequency)
   lf <- matrix(ncol = M, nrow = mhalfm)
 
-  f0 <- specARIMA(eta, p=p, q=q, m=m)$spec
+  f0 <- specARIMA(eta, p=p, q=q, m=m, spec.only=TRUE)
 
   for(j in 1:M) {
     etaj <- eta
     etaj[j] <- etaj[j] + delta
-    fj <- specARIMA(etaj, p=p, q=q, m=m)$spec
+    fj <- specARIMA(etaj, p=p, q=q, m=m, spec.only=TRUE)
     lf[,j] <- log(fj/f0)/delta
   }
 
@@ -150,7 +150,7 @@ B.specFGN <- function(lambd, H, k.approx= 3, adjust= (k.approx == 3), nsum = 200
 ##' @param ... optional arguments passed on to B.specFGN()
 ##' @return vector of (approximate) spectrum values f(lambd[])
 ##' @author Jan Beran Murad Taqqu -> Diethelm Wuertz -> Martin Maechler
-specFGN <- function(eta, m, ...)
+specFGN <- function(eta, m, ..., spec.only = FALSE)
 {
   ## Purpose: Calculation of the spectral density f of
   ## normalized fractional Gaussian noise with self-similarity parameter H=H
@@ -180,14 +180,16 @@ specFGN <- function(eta, m, ...)
 
   B. <- B.specFGN(lambd, H, ...)
   spec <- sin(pi*H)/pi * gamma(2*H+1) * (1-cos(lambd))* (lambd^(-2*H-1) + B.)
-
   ##----- adjust spectrum such that int{log(spec)} = 0 -------
   theta1 <- exp(2/m * sum(log(spec)))
   ## and specS = spec*() = spec / theta1 is adjusted :
-  r <- list(freq = lambd, spec = spec/theta1, theta1 = theta1,
-            H = H, method = paste("fGN( H=",format(H),")"))
-  class(r) <- "spec"
-  r
+  if(spec.only)
+      spec/theta1
+  else
+    structure(
+        list(freq = lambd, spec = spec/theta1, theta1 = theta1,
+             H = H, method = paste("fGN( H=",format(H),")")),
+        class = "spec")
 }## specFGN()
 
 
@@ -221,7 +223,7 @@ simFGN.fft <- function(n, H, ...) {
 }
 
 
-specARIMA <- function(eta, p,q, m)
+specARIMA <- function(eta, p,q, m, spec.only = FALSE)
 {
   ## Purpose: Calculation of the spectral density of fractional ARMA
   ##	with standard normal innovations and self-similarity parameter H=H
@@ -262,26 +264,29 @@ specARIMA <- function(eta, p,q, m)
 
   ##-----   calculation of f at Fourier frequencies   -------
 
-
   if(p > 0) {
-    phi <- eta[2:(p+1)]
-    px <- outer(x, 1:p)
-    Rar <- cos(px) %*% phi
-    Iar <- sin(px) %*% phi
+    phi <- eta[2L:(p+1L)]
+    px <- outer(x, 1L:p)
+    ## Rar <- cos(px) %*% phi
+    ## Iar <- sin(px) %*% phi
 
-    far <- (1-Rar)^2 + Iar^2
+    ## far <- (1-Rar)^2 + Iar^2
+    Car <- exp(1i * px) %*% phi
+    far <- (1-Re(Car))^2 + Im(Car)^2
   } else {
       phi <- numeric(0)
       far <- 1
   }
 
   if(q > 0) {
-    psi <- eta[(p+2):(p+q+1)]
-    px <- outer(x, 1:q)
-    Rma <- cos(px) %*% psi
-    Ima <- sin(px) %*% psi
+    psi <- eta[(p+2L):(p+q+1L)]
+    px <- outer(x, 1L:q)
+    ## Rma <- cos(px) %*% psi
+    ## Ima <- sin(px) %*% psi
 
-    fma <- (1+Rma)^2 + Ima^2
+    ## fma <- (1+Rma)^2 + Ima^2
+    Cma <- exp(1i * px) %*% psi
+    fma <- (1+Re(Cma))^2 + Im(Cma)^2
   } else {
       psi <- numeric(0)
       fma <- 1
@@ -289,6 +294,7 @@ specARIMA <- function(eta, p,q, m)
 
   spec <- fma/far * sqrt(2 - 2*cos(x))^(1-2*H)
   ##   			 2 - 2*cos(x) == (1-cos(x))^2 + sin(x)^2
+  if(spec.only) return(spec)
 
   r <- list(freq = x, spec = spec, theta1 = 1/(2*pi),
             pq = c(p,q), eta = c(H = H, phi = phi, psi = psi),

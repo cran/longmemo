@@ -6,12 +6,15 @@
   with standard normal innovations and self-similarity parameter H.
 }
 \usage{
-specARIMA(eta, p, q, m)
+specARIMA(eta, p, q, m, spec.only = FALSE)
 }
 \arguments{
   \item{eta}{parameter vector \code{eta = c(H, phi, psi)}.}
   \item{p, q}{integers giving AR and MA order respectively.}
   \item{m}{sample size determining Fourier frequencies.}
+  \item{spec.only}{\code{\link{logical}} indicating that only the numeric
+    vector of spectral density estimates (the \code{spec} component of the
+    full list) is returned.}
 }
 \details{
   at the Fourier frequencies \eqn{2*\pi*j/n}, (\eqn{j=1,\dots,(n-1)}),
@@ -26,8 +29,8 @@ specARIMA(eta, p, q, m)
 
 }
 \value{
-  an object of class \code{"spec"} (see also \code{\link{spectrum}})
-  with components
+  an object of class \code{"spec"} (by default, when \code{spec.only} is
+  false) see also \code{\link{spectrum}}) with components
   \item{freq}{the Fourier frequencies (in \eqn{(0,\pi)}) at which the
     spectrum is computed, see \code{freq} in \code{\link{specFGN}}.}
   \item{spec}{the \emph{scaled} values spectral density \eqn{f(\lambda)}

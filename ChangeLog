@@ -1,3 +1,20 @@
+2025-07-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* tests/ceta-ex.R, *.Rout.save: less output + stopifnot()
+
+2025-07-08  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version): 1.1-4
+
+	* R/WhittleEst.R, man/specARIMA.Rd: specARIMA() and specFGN() get a
+	new optional argument 'spec.only = FALSE'  which is set to TRUE
+	when called from CetaARIMA() or CetaFGN() respectively, speeding up
+	these Ceta*() functions.
+
+2024-07-30  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version): 1.1-3, released to CRAN
+
 2011-06-17  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* inst/doc/BspecFGN.Rnw: add vignette about Paxson's approximation
